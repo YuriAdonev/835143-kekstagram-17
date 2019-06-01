@@ -1,7 +1,7 @@
 # Личный проект «Кекстаграм» [![Build status][travis-image]][travis-url]
 
 * Студент: [Юрий Адоньев](https://up.htmlacademy.ru/javascript/17/user/835143).
-* Наставник: `Неизвестно`.
+* Наставник: [Анастасия Шишова](https://htmlacademy.ru/profile/anashi).
 
 ---
 
