@@ -69,13 +69,13 @@ function generatePublications(num) {
   }
 }
 
-function createPublicationFragment(template, arr, fragment) {
-  for (var i = 0; i < arr.length; i++) {
-    var publication = template.cloneNode(true);
-    publication.querySelector('.picture__likes').textContent = arr[i].likes;
-    publication.querySelector('.picture__comments').textContent = arr[i].comments.length.toString();
-    publication.querySelector('.picture__img').setAttribute('src', arr[i].url);
-    fragment.appendChild(publication);
+function createPublicationFragment() {
+  for (var i = 0; i < publications.length; i++) {
+    var publication = publicationTemplate.cloneNode(true);
+    publication.querySelector('.picture__likes').textContent = publications[i].likes;
+    publication.querySelector('.picture__comments').textContent = publications[i].comments.length.toString();
+    publication.querySelector('.picture__img').setAttribute('src', publications[i].url);
+    publicationFragment.appendChild(publication);
   }
 }
 
@@ -85,5 +85,5 @@ function renderPublications(fragment) {
 }
 
 generatePublications(numberOfPublications);
-createPublicationFragment(publicationTemplate, publications, publicationFragment);
+createPublicationFragment();
 renderPublications(publicationFragment);
