@@ -1,5 +1,7 @@
 'use strict';
 
+var ESC_KEYCODE = 27;
+
 var publications = [];
 var numberOfPublications = 25;
 var likesMax = 200;
@@ -84,6 +86,53 @@ function renderPublications(fragment) {
 
 }
 
+function onEditWindowEscPress(evt) {
+  if (evt.keyCode === ESC_KEYCODE) {
+    closeEditWindow();
+  }
+}
+
+function openEditWindow() {
+  document.querySelector('.img-upload__overlay').classList.remove('hidden');
+  document.addEventListener('keydown', onEditWindowEscPress);
+}
+
+function closeEditWindow() {
+  document.querySelector('.img-upload__overlay').classList.add('hidden');
+  document.querySelector('.img-upload__preview img').className = '';
+  document.removeEventListener('keydown', onEditWindowEscPress);
+}
+
+function changeFilter(newFilter) {
+  if (newFilter === 'none') {
+    document.querySelector('.img-upload__preview img').className = '';
+  } else {
+    document.querySelector('.img-upload__preview img').className = 'effects__preview--' + newFilter;
+  }
+}
+
 generatePublications(numberOfPublications);
 createPublicationFragment();
 renderPublications(publicationFragment);
+
+document.querySelector('#upload-file').addEventListener('input', openEditWindow);
+document.querySelector('#upload-cancel').addEventListener('click', closeEditWindow);
+
+document.querySelector('#effect-none').addEventListener('input', function () {
+  changeFilter(document.querySelector('#effect-none').value);
+});
+document.querySelector('#effect-chrome').addEventListener('input', function () {
+  changeFilter(document.querySelector('#effect-chrome').value);
+});
+document.querySelector('#effect-sepia').addEventListener('input', function () {
+  changeFilter(document.querySelector('#effect-sepia').value);
+});
+document.querySelector('#effect-marvin').addEventListener('input', function () {
+  changeFilter(document.querySelector('#effect-marvin').value);
+});
+document.querySelector('#effect-phobos').addEventListener('input', function () {
+  changeFilter(document.querySelector('#effect-phobos').value);
+});
+document.querySelector('#effect-heat').addEventListener('input', function () {
+  changeFilter(document.querySelector('#effect-heat').value);
+});
