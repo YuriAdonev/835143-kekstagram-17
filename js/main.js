@@ -1,6 +1,7 @@
 'use strict';
 
 var ESC_KEYCODE = 27;
+var ENTER_KEYCODE = 13;
 
 var publications = [];
 var numberOfPublications = 25;
@@ -9,6 +10,7 @@ var likesMin = 15;
 var commentsMax = 20;
 var publicationTemplate = document.querySelector('#picture').content.querySelector('.picture');
 var publicationFragment = document.createDocumentFragment();
+var imageScale = 100;
 
 var commentsList = [
   'Всё отлично!',
@@ -95,6 +97,7 @@ function onEditWindowEscPress(evt) {
 function openEditWindow() {
   document.querySelector('.img-upload__overlay').classList.remove('hidden');
   document.addEventListener('keydown', onEditWindowEscPress);
+  showImageScale();
 }
 
 function closeEditWindow() {
@@ -105,9 +108,41 @@ function closeEditWindow() {
 
 function changeFilter(newFilter) {
   if (newFilter === 'none') {
+    document.querySelector('.effect-level').classList.add('hidden');
     document.querySelector('.img-upload__preview img').className = '';
   } else {
+    document.querySelector('.effect-level').classList.remove('hidden');
     document.querySelector('.img-upload__preview img').className = 'effects__preview--' + newFilter;
+  }
+}
+
+function showImageScale() {
+  document.querySelector('.scale__control--value').value = imageScale + '%';
+}
+
+function changeImageScale() {
+  document.querySelector('.img-upload__preview img').style.transform = 'scale(' + (imageScale / 100) + ')';
+}
+
+function imageZoomIn() {
+  if (imageScale < 100) {
+    imageScale = imageScale + 25;
+    changeImageScale();
+    showImageScale();
+  }
+}
+
+function imageZoomOut() {
+  if (imageScale > 25) {
+    imageScale = imageScale - 25;
+    changeImageScale();
+    showImageScale();
+  }
+}
+
+function disableEnterKey(evt) {
+  if (evt.keyCode === ENTER_KEYCODE) {
+    evt.preventDefault();
   }
 }
 
@@ -117,6 +152,9 @@ renderPublications(publicationFragment);
 
 document.querySelector('#upload-file').addEventListener('input', openEditWindow);
 document.querySelector('#upload-cancel').addEventListener('click', closeEditWindow);
+
+document.querySelector('.scale__control--smaller').addEventListener('click', imageZoomOut);
+document.querySelector('.scale__control--bigger').addEventListener('click', imageZoomIn);
 
 document.querySelector('#effect-none').addEventListener('input', function () {
   changeFilter(document.querySelector('#effect-none').value);
@@ -135,4 +173,10 @@ document.querySelector('#effect-phobos').addEventListener('input', function () {
 });
 document.querySelector('#effect-heat').addEventListener('input', function () {
   changeFilter(document.querySelector('#effect-heat').value);
+});
+document.querySelector('.text__hashtags').addEventListener('focus', function () {
+  document.addEventListener('keydown', disableEnterKey);
+});
+document.querySelector('.text__hashtags').addEventListener('blur', function () {
+  document.removeEventListener('keydown', disableEnterKey);
 });
