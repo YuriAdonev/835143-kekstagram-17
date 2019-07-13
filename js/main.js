@@ -1,12 +1,28 @@
 'use strict';
 
+var ESC_KEYCODE = 27;
+var ENTER_KEYCODE = 13;
+var NUMBER_OF_PUBLICATIONS = 25;
+var LIKES_MAX = 200;
+var LIKES_MIN = 15;
+var COMMENTS_MAX = 20;
+
 var publications = [];
-var numberOfPublications = 25;
-var likesMax = 200;
-var likesMin = 15;
-var commentsMax = 20;
+var imageScale = 100;
+
 var publicationTemplate = document.querySelector('#picture').content.querySelector('.picture');
 var publicationFragment = document.createDocumentFragment();
+
+var uploadFileInput = document.querySelector('#upload-file');
+var uploadCancelButton = document.querySelector('#upload-cancel');
+var imagePreview = document.querySelector('.img-upload__preview img');
+var scaleIncreaseButton = document.querySelector('.scale__control--bigger');
+var scaleDecreaseButton = document.querySelector('.scale__control--smaller');
+var textHashtagsInput = document.querySelector('.text__hashtags');
+var textDescriptionInput = document.querySelector('.text__description');
+var effectLevelSlider = document.querySelector('.effect-level');
+
+var effectsRadioButtons = document.querySelectorAll('.effects__radio');
 
 var commentsList = [
   'Всё отлично!',
@@ -33,7 +49,7 @@ function generatePhotoUrl(index) {
 }
 
 function generateLikes() {
-  var likes = Math.floor(Math.random() * (likesMax - likesMin)) + likesMin;
+  var likes = Math.floor(Math.random() * (LIKES_MAX - LIKES_MIN)) + LIKES_MIN;
   return likes;
 }
 
@@ -63,7 +79,7 @@ function generatePublications(num) {
     var publication = {
       url: generatePhotoUrl(i + 1),
       likes: generateLikes(),
-      comments: generateComments(Math.floor(Math.random() * commentsMax))
+      comments: generateComments(Math.floor(Math.random() * COMMENTS_MAX))
     };
     publications.push(publication);
   }
@@ -84,6 +100,93 @@ function renderPublications(fragment) {
 
 }
 
-generatePublications(numberOfPublications);
+function onEditWindowEscPress(evt) {
+  if (evt.keyCode === ESC_KEYCODE) {
+    closeEditWindow();
+  }
+}
+
+function openEditWindow() {
+  document.querySelector('.img-upload__overlay').classList.remove('hidden');
+  document.addEventListener('keydown', onEditWindowEscPress);
+  showImageScale();
+}
+
+function closeEditWindow() {
+  document.querySelector('.img-upload__overlay').classList.add('hidden');
+  imagePreview.className = '';
+  document.removeEventListener('keydown', onEditWindowEscPress);
+}
+
+function onChangeFilter(newFilter) {
+  if (newFilter === 'none') {
+    effectLevelSlider.classList.add('hidden');
+  } else {
+    effectLevelSlider.classList.remove('hidden');
+  }
+  imagePreview.className = 'effects__preview--' + newFilter;
+}
+
+function showImageScale() {
+  document.querySelector('.scale__control--value').value = imageScale + '%';
+}
+
+function changeImageScale() {
+  imagePreview.style.transform = 'scale(' + (imageScale / 100) + ')';
+}
+
+function imageZoomIn() {
+  if (imageScale < 100) {
+    imageScale = imageScale + 25;
+    changeImageScale();
+    showImageScale();
+  }
+}
+
+function imageZoomOut() {
+  if (imageScale > 25) {
+    imageScale = imageScale - 25;
+    changeImageScale();
+    showImageScale();
+  }
+}
+
+function disableEnterKey(evt) {
+  if (evt.keyCode === ENTER_KEYCODE) {
+    evt.preventDefault();
+  }
+}
+
+generatePublications(NUMBER_OF_PUBLICATIONS);
 createPublicationFragment();
 renderPublications(publicationFragment);
+
+uploadFileInput.addEventListener('input', openEditWindow);
+uploadCancelButton.addEventListener('click', closeEditWindow);
+
+scaleIncreaseButton.addEventListener('click', function () {
+  imageZoomIn();
+});
+scaleDecreaseButton.addEventListener('click', function () {
+  imageZoomOut();
+});
+
+for (var i = 0; i < effectsRadioButtons.length; i++) {
+  effectsRadioButtons[i].addEventListener('input', function (evt) {
+    onChangeFilter(evt.target.getAttribute('value'));
+  });
+  effectsRadioButtons[i].addEventListener('keydown', disableEnterKey);
+}
+
+textHashtagsInput.addEventListener('focus', function () {
+  document.addEventListener('keydown', disableEnterKey);
+});
+textHashtagsInput.addEventListener('blur', function () {
+  document.removeEventListener('keydown', disableEnterKey);
+});
+textDescriptionInput.addEventListener('focus', function () {
+  document.removeEventListener('keydown', onEditWindowEscPress);
+});
+textDescriptionInput.addEventListener('blur', function () {
+  document.addEventListener('keydown', onEditWindowEscPress);
+});
