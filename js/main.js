@@ -15,7 +15,7 @@ var publicationFragment = document.createDocumentFragment();
 
 var uploadFileInput = document.querySelector('#upload-file');
 var uploadCancelButton = document.querySelector('#upload-cancel');
-var imagePreview = document.querySelector('.img-upload__preview img');
+var imagePreview = document.querySelector('.img-upload__preview');
 var scaleIncreaseButton = document.querySelector('.scale__control--bigger');
 var scaleDecreaseButton = document.querySelector('.scale__control--smaller');
 var textHashtagsInput = document.querySelector('.text__hashtags');
@@ -114,7 +114,7 @@ function openEditWindow() {
 
 function closeEditWindow() {
   document.querySelector('.img-upload__overlay').classList.add('hidden');
-  imagePreview.className = '';
+  uploadFileInput.value = '';
   document.removeEventListener('keydown', onEditWindowEscPress);
 }
 
