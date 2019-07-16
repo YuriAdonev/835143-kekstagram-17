@@ -15,12 +15,17 @@ var publicationFragment = document.createDocumentFragment();
 
 var uploadFileInput = document.querySelector('#upload-file');
 var uploadCancelButton = document.querySelector('#upload-cancel');
-var imagePreview = document.querySelector('.img-upload__preview');
+var imagePreview = document.querySelector('.img-upload__preview img');
+var imagePreviewBlock = document.querySelector('.img-upload__preview');
 var scaleIncreaseButton = document.querySelector('.scale__control--bigger');
 var scaleDecreaseButton = document.querySelector('.scale__control--smaller');
 var textHashtagsInput = document.querySelector('.text__hashtags');
 var textDescriptionInput = document.querySelector('.text__description');
 var effectLevelSlider = document.querySelector('.effect-level');
+var effectLevelDepth = document.querySelector('.effect-level__depth');
+var effectLevelPin = document.querySelector('.effect-level__pin');
+var effectLevelInput = document.querySelector('.effect-level__value');
+var currentFilter;
 
 var effectsRadioButtons = document.querySelectorAll('.effects__radio');
 
@@ -116,6 +121,9 @@ function closeEditWindow() {
   document.querySelector('.img-upload__overlay').classList.add('hidden');
   uploadFileInput.value = '';
   document.removeEventListener('keydown', onEditWindowEscPress);
+  document.querySelector('#effect-none').checked = true;
+  onChangeFilter('none');
+  resetEffectFilter();
 }
 
 function onChangeFilter(newFilter) {
@@ -125,6 +133,8 @@ function onChangeFilter(newFilter) {
     effectLevelSlider.classList.remove('hidden');
   }
   imagePreview.className = 'effects__preview--' + newFilter;
+  currentFilter = newFilter;
+  resetEffectFilter();
 }
 
 function showImageScale() {
@@ -132,7 +142,7 @@ function showImageScale() {
 }
 
 function changeImageScale() {
-  imagePreview.style.transform = 'scale(' + (imageScale / 100) + ')';
+  imagePreviewBlock.style.transform = 'scale(' + (imageScale / 100) + ')';
 }
 
 function imageZoomIn() {
@@ -155,6 +165,38 @@ function disableEnterKey(evt) {
   if (evt.keyCode === ENTER_KEYCODE) {
     evt.preventDefault();
   }
+}
+
+function resetEffectFilter() {
+  effectLevelInput.setAttribute('value', '100');
+  effectLevelPin.style.left = '100%';
+  effectLevelDepth.style.width = '100%';
+  imagePreview.setAttribute('style', '');
+}
+
+function onChangeEffectValue(percentEffect) {
+  var effectStyle;
+  switch (currentFilter) {
+    case 'chrome':
+      effectStyle = 'filter: grayscale(' + (+percentEffect / 100) + ');';
+      break;
+    case 'sepia':
+      effectStyle = 'filter: sepia(' + (+percentEffect / 100) + ');';
+      break;
+    case 'marvin':
+      effectStyle = 'filter: invert(' + percentEffect + '%);';
+      break;
+    case 'phobos':
+      effectStyle = 'filter: blur(' + ((+percentEffect / 100) * 3) + 'px);';
+      break;
+    case 'heat':
+      effectStyle = 'filter: brightness(' + (((+percentEffect / 100) * 2) + 1) + ');';
+      break;
+    default:
+      effectStyle = '';
+      break;
+  }
+  imagePreview.setAttribute('style', effectStyle);
 }
 
 generatePublications(NUMBER_OF_PUBLICATIONS);
@@ -189,4 +231,38 @@ textDescriptionInput.addEventListener('focus', function () {
 });
 textDescriptionInput.addEventListener('blur', function () {
   document.addEventListener('keydown', onEditWindowEscPress);
+});
+
+effectLevelPin.addEventListener('mousedown', function (evt) {
+  evt.preventDefault();
+  var startCoordsX = evt.clientX;
+  var newEffectPercent;
+
+  function onMouseMove(moveEvt) {
+    var effectLineWidth = document.querySelector('.effect-level__line').clientWidth;
+    var currentEffectPercent = effectLevelInput.getAttribute('value');
+    var shiftX = moveEvt.clientX - startCoordsX;
+    newEffectPercent = +currentEffectPercent + ((shiftX / effectLineWidth) * 100);
+    if (newEffectPercent < 0) {
+      newEffectPercent = 0;
+    }
+    if (newEffectPercent > 100) {
+      newEffectPercent = 100;
+    }
+    effectLevelPin.style.left = newEffectPercent + '%';
+    effectLevelDepth.style.width = newEffectPercent + '%';
+
+    onChangeEffectValue(newEffectPercent);
+  }
+  function onMouseUp(upEvt) {
+    upEvt.preventDefault();
+
+    effectLevelInput.setAttribute('value', newEffectPercent);
+
+    document.removeEventListener('mousemove', onMouseMove);
+    document.removeEventListener('mouseup', onMouseUp);
+  }
+
+  document.addEventListener('mousemove', onMouseMove);
+  document.addEventListener('mouseup', onMouseUp);
 });
