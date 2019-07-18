@@ -20,4 +20,4 @@
   }
   createPublicationFragment();
   renderPublications(publicationFragment);
-})()
+})();

@@ -71,4 +71,4 @@
 
   generatePublications(NUMBER_OF_PUBLICATIONS);
 
-})()
+})();
