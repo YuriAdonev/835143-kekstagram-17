@@ -1,8 +1,6 @@
 'use strict';
 
 (function () {
-  var ESC_KEYCODE = 27;
-  var ENTER_KEYCODE = 13;
   var imageScale = 100;
   var uploadFileInput = document.querySelector('#upload-file');
   var uploadCancelButton = document.querySelector('#upload-cancel');
@@ -10,21 +8,18 @@
   var scaleIncreaseButton = document.querySelector('.scale__control--bigger');
   var scaleDecreaseButton = document.querySelector('.scale__control--smaller');
 
-  window.preview = {
+  window.editor = {
     showImageScale: function () {
       document.querySelector('.scale__control--value').value = imageScale + '%';
     },
-    onEditWindowEscPress: function (evt) {
-      if (evt.keyCode === ESC_KEYCODE) {
-        closeEditWindow();
-      }
-    },
-    disableEnterKey: function (evt) {
-      if (evt.keyCode === ENTER_KEYCODE) {
-        evt.preventDefault();
-      }
-    }
   };
+
+  function onEditWindowEscPress(evt) {
+    if (evt.keyCode === window.utils.isEscKeyCode) {
+      closeEditWindow();
+    }
+  }
+
   function changeImageScale() {
     imagePreviewBlock.style.transform = 'scale(' + (imageScale / 100) + ')';
   }
@@ -33,7 +28,7 @@
     if (imageScale < 100) {
       imageScale = imageScale + 25;
       changeImageScale();
-      window.preview.showImageScale();
+      window.editor.showImageScale();
     }
   }
 
@@ -41,23 +36,23 @@
     if (imageScale > 25) {
       imageScale = imageScale - 25;
       changeImageScale();
-      window.preview.showImageScale();
+      window.editor.showImageScale();
     }
   }
 
   function openEditWindow() {
     document.querySelector('.img-upload__overlay').classList.remove('hidden');
-    document.addEventListener('keydown', window.preview.onEditWindowEscPress);
-    window.preview.showImageScale();
+    document.addEventListener('keydown', onEditWindowEscPress);
+    window.editor.showImageScale();
   }
 
   function closeEditWindow() {
     document.querySelector('.img-upload__overlay').classList.add('hidden');
     uploadFileInput.value = '';
-    document.removeEventListener('keydown', window.preview.onEditWindowEscPress);
+    document.removeEventListener('keydown', onEditWindowEscPress);
     document.querySelector('#effect-none').checked = true;
-    window.form.onChangeFilter('none');
-    window.form.resetEffectFilter();
+    window.filter.onChangeFilter('none');
+    window.slider.resetEffectFilter();
   }
 
   scaleIncreaseButton.addEventListener('click', function () {
@@ -67,7 +62,11 @@
     imageZoomOut();
   });
 
-  uploadFileInput.addEventListener('input', openEditWindow);
-  uploadCancelButton.addEventListener('click', closeEditWindow);
+  uploadFileInput.addEventListener('input', function () {
+    openEditWindow();
+  });
+  uploadCancelButton.addEventListener('click', function () {
+    closeEditWindow();
+  });
 
 })();

@@ -26,14 +26,26 @@
     'Вашингтон'
   ];
 
-  window.publications = [];
+  window.data = {
+    publications: [],
+    generate: function () {
+      for (var i = 0; i < NUMBER_OF_PUBLICATIONS; i++) {
+        var publication = {
+          url: generatePhotoUrl(i + 1),
+          likes: generateLikes(),
+          comments: generateComments(window.utils.getRandomNum(0, COMMENTS_MAX))
+        };
+        window.data.publications.push(publication);
+      }
+    }
+  };
 
   function generatePhotoUrl(index) {
     return 'photos/' + index + '.jpg';
   }
 
   function generateLikes() {
-    var likes = Math.floor(Math.random() * (LIKES_MAX - LIKES_MIN)) + LIKES_MIN;
+    var likes = window.utils.getRandomNum(LIKES_MIN, LIKES_MAX - LIKES_MIN);
     return likes;
   }
 
@@ -49,7 +61,7 @@
         message = message + ' ' + generateRandomValue(commentsList);
       }
       var comment = {
-        avatar: 'img/avatar-' + (Math.floor(Math.random() * 6) + 1) + '.svg',
+        avatar: 'img/avatar-' + window.utils.getRandomNum(1, 6) + '.svg',
         message: message,
         name: generateRandomValue(namesList)
       };
@@ -57,18 +69,5 @@
     }
     return comments;
   }
-
-  function generatePublications(num) {
-    for (var i = 0; i < num; i++) {
-      var publication = {
-        url: generatePhotoUrl(i + 1),
-        likes: generateLikes(),
-        comments: generateComments(Math.floor(Math.random() * COMMENTS_MAX))
-      };
-      window.publications.push(publication);
-    }
-  }
-
-  generatePublications(NUMBER_OF_PUBLICATIONS);
 
 })();
