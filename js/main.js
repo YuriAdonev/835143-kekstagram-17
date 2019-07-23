@@ -1,4 +1,4 @@
 'use strict';
 
-window.data.generate();
+// window.data.generate();
 window.gallery.renderPublications();
