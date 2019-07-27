@@ -1,44 +1,29 @@
 'use strict';
 
 (function () {
-  var imagePreview = document.querySelector('.img-upload__preview img');
   var effectLevelDepth = document.querySelector('.effect-level__depth');
   var effectLevelPin = document.querySelector('.effect-level__pin');
   var effectLevelInput = document.querySelector('.effect-level__value');
+  var effectLevelSlider = document.querySelector('.effect-level');
 
   window.slider = {
-    currentFilter: '',
-    resetEffectFilter: function () {
-      effectLevelInput.setAttribute('value', '100');
-      effectLevelPin.style.left = '100%';
-      effectLevelDepth.style.width = '100%';
-      imagePreview.setAttribute('style', '');
-    }
+    show: show,
+    hide: hide,
+    reset: reset
   };
 
-  function onChangeEffectValue(percentEffect) {
-    var effectStyle;
-    switch (window.slider.currentFilter) {
-      case 'chrome':
-        effectStyle = 'filter: grayscale(' + (+percentEffect / 100) + ');';
-        break;
-      case 'sepia':
-        effectStyle = 'filter: sepia(' + (+percentEffect / 100) + ');';
-        break;
-      case 'marvin':
-        effectStyle = 'filter: invert(' + percentEffect + '%);';
-        break;
-      case 'phobos':
-        effectStyle = 'filter: blur(' + ((+percentEffect / 100) * 3) + 'px);';
-        break;
-      case 'heat':
-        effectStyle = 'filter: brightness(' + (((+percentEffect / 100) * 2) + 1) + ');';
-        break;
-      default:
-        effectStyle = '';
-        break;
-    }
-    imagePreview.setAttribute('style', effectStyle);
+  function show() {
+    effectLevelSlider.classList.remove('hidden');
+  }
+
+  function hide() {
+    effectLevelSlider.classList.add('hidden');
+  }
+
+  function reset() {
+    effectLevelInput.setAttribute('value', '100');
+    effectLevelPin.style.left = '100%';
+    effectLevelDepth.style.width = '100%';
   }
 
   effectLevelPin.addEventListener('mousedown', function (evt) {
@@ -60,7 +45,7 @@
       effectLevelPin.style.left = newEffectPercent + '%';
       effectLevelDepth.style.width = newEffectPercent + '%';
 
-      onChangeEffectValue(newEffectPercent);
+      window.filter.changeIntensity(newEffectPercent);
     }
     function onMouseUp(upEvt) {
       upEvt.preventDefault();

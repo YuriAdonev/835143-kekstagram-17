@@ -2,18 +2,17 @@
 
 (function () {
   window.utils = {
-    isEnterKeyCode: 13,
-    isEscKeyCode: 27,
-    getRandomNum: function (min, max) {
-      return Math.floor(Math.random() * max) + min;
+    keyCode: {
+      ENTER: 13,
+      ESC: 27
     },
     disableEnterKey: function (evt) {
-      if (evt.keyCode === window.utils.isEnterKeyCode) {
-        evt.preventDefault();
+      if (evt.keyCode === window.utils.keyCode.ENTER) {
+        evt.stopPropagation();
       }
     },
     disableEscKey: function (evt) {
-      if (evt.keyCode === window.utils.isEscKeyCode) {
+      if (evt.keyCode === window.utils.keyCode.ESC) {
         evt.stopPropagation();
       }
     }

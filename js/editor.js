@@ -15,7 +15,7 @@
   };
 
   function onEditWindowEscPress(evt) {
-    if (evt.keyCode === window.utils.isEscKeyCode) {
+    if (evt.keyCode === window.utils.keyCode.ESC) {
       closeEditWindow();
     }
   }
@@ -51,8 +51,9 @@
     uploadFileInput.value = '';
     document.removeEventListener('keydown', onEditWindowEscPress);
     document.querySelector('#effect-none').checked = true;
-    window.filter.onChangeFilter('none');
-    window.slider.resetEffectFilter();
+    window.filter.changeFilter('none');
+    window.slider.reset();
+    window.filter.reset();
   }
 
   scaleIncreaseButton.addEventListener('click', function () {

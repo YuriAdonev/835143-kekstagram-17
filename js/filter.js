@@ -2,29 +2,61 @@
 
 (function () {
   var imagePreview = document.querySelector('.img-upload__preview img');
-  var effectLevelSlider = document.querySelector('.effect-level');
   var effectsRadioButtons = document.querySelectorAll('.effects__radio');
 
   window.filter = {
-    onChangeFilter: function (newFilter) {
+    reset: reset,
+    currentFilter: '',
+    changeIntensity: changeIntensity,
+    changeFilter: function (newFilter) {
       if (newFilter === 'none') {
-        effectLevelSlider.classList.add('hidden');
+        window.slider.hide();
       } else {
-        effectLevelSlider.classList.remove('hidden');
+        window.slider.show();
       }
       imagePreview.className = 'effects__preview--' + newFilter;
-      window.slider.currentFilter = newFilter;
-      window.slider.resetEffectFilter();
+      window.filter.currentFilter = newFilter;
+      window.slider.reset();
+      window.filter.reset();
     }
   };
 
   for (var i = 0; i < effectsRadioButtons.length; i++) {
     (function (effectButton) {
       effectButton.addEventListener('input', function (evt) {
-        window.filter.onChangeFilter(evt.target.getAttribute('value'));
+        window.filter.changeFilter(evt.target.getAttribute('value'));
       });
       effectButton.addEventListener('keydown', window.utils.disableEnterKey);
     })(effectsRadioButtons[i]);
+  }
+
+  function reset() {
+    imagePreview.setAttribute('style', '');
+  }
+
+  function changeIntensity(percentEffect) {
+    var effectStyle;
+    switch (window.filter.currentFilter) {
+      case 'chrome':
+        effectStyle = 'filter: grayscale(' + (+percentEffect / 100) + ');';
+        break;
+      case 'sepia':
+        effectStyle = 'filter: sepia(' + (+percentEffect / 100) + ');';
+        break;
+      case 'marvin':
+        effectStyle = 'filter: invert(' + percentEffect + '%);';
+        break;
+      case 'phobos':
+        effectStyle = 'filter: blur(' + ((+percentEffect / 100) * 3) + 'px);';
+        break;
+      case 'heat':
+        effectStyle = 'filter: brightness(' + (((+percentEffect / 100) * 2) + 1) + ');';
+        break;
+      default:
+        effectStyle = '';
+        break;
+    }
+    imagePreview.setAttribute('style', effectStyle);
   }
 
 })();
