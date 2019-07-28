@@ -2,7 +2,7 @@
 
 (function () {
   window.utils = {
-    keyCode: {
+    KeyCode: {
       ENTER: 13,
       ESC: 27
     },
