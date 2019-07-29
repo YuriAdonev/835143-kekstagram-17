@@ -63,7 +63,7 @@
     window.filter.reset();
   }
 
-  function readURL(input) {
+  function changePreviewImage(input) {
     if (input.files && input.files[0]) {
       var reader = new FileReader();
 
@@ -86,7 +86,7 @@
   });
 
   uploadFileInput.addEventListener('input', function (evt) {
-    readURL(evt.target);
+    changePreviewImage(evt.target);
     openEditWindow();
   });
   uploadCancelButton.addEventListener('click', function () {
