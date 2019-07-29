@@ -47,6 +47,7 @@
 
       window.filter.changeIntensity(newEffectPercent);
     }
+
     function onMouseUp(upEvt) {
       upEvt.preventDefault();
 

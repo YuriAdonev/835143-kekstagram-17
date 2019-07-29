@@ -3,12 +3,13 @@
 (function () {
   var publicationTemplate = document.querySelector('#picture').content.querySelector('.picture');
   var publicationFragment = document.createDocumentFragment();
+
   window.gallery = {
     renderPublications: function () {
       window.load(successHandler, errorHandler);
-      // renderPublications(publicationFragment);
     }
   };
+
   function renderPublications(fragment) {
     document.querySelector('.pictures').appendChild(fragment);
   }

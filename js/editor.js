@@ -1,6 +1,10 @@
 'use strict';
 
 (function () {
+  var SCALE_MAX = 100;
+  var SCALE_MIN = 25;
+  var SCALE_STEP = 25;
+
   var imageScale = 100;
   var uploadFileInput = document.querySelector('#upload-file');
   var uploadCancelButton = document.querySelector('#upload-cancel');
@@ -25,16 +29,16 @@
   }
 
   function imageZoomIn() {
-    if (imageScale < 100) {
-      imageScale = imageScale + 25;
+    if (imageScale < SCALE_MAX) {
+      imageScale = imageScale + SCALE_STEP;
       changeImageScale();
       window.editor.showImageScale();
     }
   }
 
   function imageZoomOut() {
-    if (imageScale > 25) {
-      imageScale = imageScale - 25;
+    if (imageScale > SCALE_MIN) {
+      imageScale = imageScale - SCALE_STEP;
       changeImageScale();
       window.editor.showImageScale();
     }
