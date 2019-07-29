@@ -12,7 +12,6 @@
     });
 
     xhr.open('POST', URL);
-    // xhr.setRequestHeader('Content-Type', 'multipart/form-data');
     xhr.send(data);
   };
 })();
