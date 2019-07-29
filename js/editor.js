@@ -67,12 +67,12 @@
     if (input.files && input.files[0]) {
       var reader = new FileReader();
 
-      reader.onload = function (e) {
-        imagePreview.setAttribute('src', e.target.result);
+      reader.onload = function (evt) {
+        imagePreview.setAttribute('src', evt.target.result);
         for (var i = 0; i < effectPreview.length; i++) {
-          effectPreview[i].setAttribute('style', 'background-image: url("' + e.target.result + '");');
+          effectPreview[i].setAttribute('style', 'background-image: url("' + evt.target.result + '");');
         }
-      }
+      };
 
       reader.readAsDataURL(input.files[0]);
     }
