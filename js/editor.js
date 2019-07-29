@@ -13,13 +13,14 @@
   var scaleDecreaseButton = document.querySelector('.scale__control--smaller');
 
   window.editor = {
+    closeEditWindow: closeEditWindow,
     showImageScale: function () {
       document.querySelector('.scale__control--value').value = imageScale + '%';
     },
   };
 
   function onEditWindowEscPress(evt) {
-    if (evt.keyCode === window.utils.keyCode.ESC) {
+    if (evt.keyCode === window.utils.KeyCode.ESC) {
       closeEditWindow();
     }
   }
