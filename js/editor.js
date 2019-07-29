@@ -8,7 +8,9 @@
   var imageScale = 100;
   var uploadFileInput = document.querySelector('#upload-file');
   var uploadCancelButton = document.querySelector('#upload-cancel');
+  var imagePreview = document.querySelector('.img-upload__preview img');
   var imagePreviewBlock = document.querySelector('.img-upload__preview');
+  var effectPreview = document.querySelectorAll('.effects__preview');
   var scaleIncreaseButton = document.querySelector('.scale__control--bigger');
   var scaleDecreaseButton = document.querySelector('.scale__control--smaller');
 
@@ -61,6 +63,21 @@
     window.filter.reset();
   }
 
+  function readURL(input) {
+    if (input.files && input.files[0]) {
+      var reader = new FileReader();
+
+      reader.onload = function (e) {
+        imagePreview.setAttribute('src', e.target.result);
+        for (var i = 0; i < effectPreview.length; i++) {
+          effectPreview[i].setAttribute('style', 'background-image: url("' + e.target.result + '");');
+        }
+      }
+
+      reader.readAsDataURL(input.files[0]);
+    }
+  }
+
   scaleIncreaseButton.addEventListener('click', function () {
     imageZoomIn();
   });
@@ -68,7 +85,8 @@
     imageZoomOut();
   });
 
-  uploadFileInput.addEventListener('input', function () {
+  uploadFileInput.addEventListener('input', function (evt) {
+    readURL(evt.target);
     openEditWindow();
   });
   uploadCancelButton.addEventListener('click', function () {
