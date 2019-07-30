@@ -15,8 +15,8 @@
   });
 
   form.addEventListener('submit', function (evt) {
-    window.upload(new FormData(form), function () {
-      window.editor.closeEditWindow();
+    window.backend.upload(new FormData(form), function () {
+      window.editor.close();
       window.filter.changeFilter('none');
       window.slider.reset();
       window.filter.reset();

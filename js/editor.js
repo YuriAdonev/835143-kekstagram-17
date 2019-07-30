@@ -8,23 +8,27 @@
   var imageScale = 100;
   var uploadFileInput = document.querySelector('#upload-file');
   var uploadCancelButton = document.querySelector('#upload-cancel');
+  var editorWindow = document.querySelector('.img-upload__overlay');
   var imagePreview = document.querySelector('.img-upload__preview img');
   var imagePreviewBlock = document.querySelector('.img-upload__preview');
   var effectPreview = document.querySelectorAll('.effects__preview');
+  var scaleControl = document.querySelector('.scale__control--value');
   var scaleIncreaseButton = document.querySelector('.scale__control--bigger');
   var scaleDecreaseButton = document.querySelector('.scale__control--smaller');
 
   window.editor = {
-    closeEditWindow: closeEditWindow,
-    showImageScale: function () {
-      document.querySelector('.scale__control--value').value = imageScale + '%';
-    },
+    open: open,
+    close: close,
   };
 
   function onEditWindowEscPress(evt) {
     if (evt.keyCode === window.utils.KeyCode.ESC) {
-      closeEditWindow();
+      close();
     }
+  }
+
+  function showImageScale() {
+    scaleControl.value = imageScale + '%';
   }
 
   function changeImageScale() {
@@ -35,7 +39,7 @@
     if (imageScale < SCALE_MAX) {
       imageScale = imageScale + SCALE_STEP;
       changeImageScale();
-      window.editor.showImageScale();
+      showImageScale();
     }
   }
 
@@ -43,18 +47,18 @@
     if (imageScale > SCALE_MIN) {
       imageScale = imageScale - SCALE_STEP;
       changeImageScale();
-      window.editor.showImageScale();
+      showImageScale();
     }
   }
 
-  function openEditWindow() {
-    document.querySelector('.img-upload__overlay').classList.remove('hidden');
+  function open() {
+    editorWindow.classList.remove('hidden');
     document.addEventListener('keydown', onEditWindowEscPress);
-    window.editor.showImageScale();
+    showImageScale();
   }
 
-  function closeEditWindow() {
-    document.querySelector('.img-upload__overlay').classList.add('hidden');
+  function close() {
+    editorWindow.classList.add('hidden');
     uploadFileInput.value = '';
     document.removeEventListener('keydown', onEditWindowEscPress);
     document.querySelector('#effect-none').checked = true;
@@ -81,16 +85,18 @@
   scaleIncreaseButton.addEventListener('click', function () {
     imageZoomIn();
   });
+
   scaleDecreaseButton.addEventListener('click', function () {
     imageZoomOut();
   });
 
   uploadFileInput.addEventListener('input', function (evt) {
     changePreviewImage(evt.target);
-    openEditWindow();
+    open();
   });
+
   uploadCancelButton.addEventListener('click', function () {
-    closeEditWindow();
+    close();
   });
 
 })();

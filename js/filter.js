@@ -26,6 +26,7 @@
 
   function changeIntensity(percentEffect) {
     var effectStyle;
+
     switch (currentFilter) {
       case 'chrome':
         effectStyle = 'filter: grayscale(' + (+percentEffect / 100) + ');';
@@ -46,6 +47,7 @@
         effectStyle = '';
         break;
     }
+
     imagePreview.setAttribute('style', effectStyle);
   }
 
@@ -55,8 +57,10 @@
     } else {
       window.slider.show();
     }
+
     imagePreview.className = 'effects__preview--' + newFilter;
     currentFilter = newFilter;
+
     window.slider.reset();
     window.filter.reset();
   }
