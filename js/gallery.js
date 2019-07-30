@@ -5,16 +5,11 @@
   var publicationFragment = document.createDocumentFragment();
 
   window.gallery = {
-    renderPublications: function () {
-      window.backend.download(successHandler, errorHandler);
-    }
+    renderPublications: renderPublications,
+    clearPublications: clearPublications
   };
 
-  function renderPublications(fragment) {
-    document.querySelector('.pictures').appendChild(fragment);
-  }
-
-  function successHandler(publications) {
+  function renderPublications(publications) {
     for (var i = 0; i < publications.length; i++) {
       var publication = publicationTemplate.cloneNode(true);
 
@@ -23,20 +18,15 @@
       publication.querySelector('.picture__img').setAttribute('src', publications[i].url);
       publicationFragment.appendChild(publication);
     }
-
-    renderPublications(publicationFragment);
+    document.querySelector('.pictures').appendChild(publicationFragment);
   }
 
-  function errorHandler(errorMessage) {
-    var node = document.createElement('div');
+  function clearPublications() {
+    var oldPublications = document.querySelectorAll('.picture');
 
-    node.style = 'z-index: 100; margin: 0 auto; text-align: center; background-color: red;';
-    node.style.position = 'absolute';
-    node.style.left = 0;
-    node.style.right = 0;
-    node.style.fontSize = '30px';
-    node.textContent = errorMessage;
-
-    document.body.insertAdjacentElement('afterbegin', node);
+    for (var i = 0; i < oldPublications.length; i++) {
+      oldPublications[i].remove();
+    }
   }
+
 })();

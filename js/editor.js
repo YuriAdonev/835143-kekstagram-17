@@ -6,19 +6,16 @@
   var SCALE_STEP = 25;
 
   var imageScale = 100;
-  var uploadFileInput = document.querySelector('#upload-file');
-  var uploadCancelButton = document.querySelector('#upload-cancel');
   var editorWindow = document.querySelector('.img-upload__overlay');
-  var imagePreview = document.querySelector('.img-upload__preview img');
+  var form = document.querySelector('.img-upload__form');
   var imagePreviewBlock = document.querySelector('.img-upload__preview');
-  var effectPreview = document.querySelectorAll('.effects__preview');
   var scaleControl = document.querySelector('.scale__control--value');
   var scaleIncreaseButton = document.querySelector('.scale__control--bigger');
   var scaleDecreaseButton = document.querySelector('.scale__control--smaller');
 
   window.editor = {
     open: open,
-    close: close,
+    close: close
   };
 
   function onEditWindowEscPress(evt) {
@@ -59,27 +56,10 @@
 
   function close() {
     editorWindow.classList.add('hidden');
-    uploadFileInput.value = '';
     document.removeEventListener('keydown', onEditWindowEscPress);
-    document.querySelector('#effect-none').checked = true;
-    window.filter.changeFilter('none');
     window.slider.reset();
-    window.filter.reset();
-  }
-
-  function changePreviewImage(input) {
-    if (input.files && input.files[0]) {
-      var reader = new FileReader();
-
-      reader.onload = function (evt) {
-        imagePreview.setAttribute('src', evt.target.result);
-        for (var i = 0; i < effectPreview.length; i++) {
-          effectPreview[i].setAttribute('style', 'background-image: url("' + evt.target.result + '");');
-        }
-      };
-
-      reader.readAsDataURL(input.files[0]);
-    }
+    window.effects.reset();
+    form.reset();
   }
 
   scaleIncreaseButton.addEventListener('click', function () {
@@ -90,13 +70,5 @@
     imageZoomOut();
   });
 
-  uploadFileInput.addEventListener('input', function (evt) {
-    changePreviewImage(evt.target);
-    open();
-  });
-
-  uploadCancelButton.addEventListener('click', function () {
-    close();
-  });
 
 })();

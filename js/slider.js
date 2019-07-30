@@ -45,7 +45,7 @@
       effectLevelPin.style.left = newEffectPercent + '%';
       effectLevelDepth.style.width = newEffectPercent + '%';
 
-      window.filter.changeIntensity(newEffectPercent);
+      window.effects.changeIntensity(newEffectPercent);
     }
 
     function onMouseUp(upEvt) {

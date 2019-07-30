@@ -1,68 +1,111 @@
 'use strict';
 
 (function () {
-  var imagePreview = document.querySelector('.img-upload__preview img');
-  var effectsRadioButtons = document.querySelectorAll('.effects__radio');
-  var currentFilter = '';
+  var publications = [];
 
-  window.filter = {
-    reset: reset,
-    changeIntensity: changeIntensity,
-    changeFilter: changeFilter
-  };
+  var filterNav = document.querySelector('.img-filters');
+  var filterButtons = filterNav.querySelectorAll('button');
 
-  for (var i = 0; i < effectsRadioButtons.length; i++) {
-    (function (effectButton) {
-      effectButton.addEventListener('input', function (evt) {
-        window.filter.changeFilter(evt.target.getAttribute('value'));
-      });
-      effectButton.addEventListener('keydown', window.utils.disableEnterKey);
-    })(effectsRadioButtons[i]);
+  function successHandler(data) {
+    publications = data;
+
+    filterNav.classList.remove('img-filters--inactive');
+    filterPublications();
   }
 
-  function reset() {
-    imagePreview.setAttribute('style', '');
+  function errorHandler(errorMessage) {
+    var node = document.createElement('div');
+
+    node.style = 'z-index: 100; margin: 0 auto; text-align: center; background-color: red;';
+    node.style.position = 'absolute';
+    node.style.left = 0;
+    node.style.right = 0;
+    node.style.fontSize = '30px';
+    node.textContent = errorMessage;
+
+    document.body.insertAdjacentElement('afterbegin', node);
   }
 
-  function changeIntensity(percentEffect) {
-    var effectStyle;
+  function clearButtons() {
+    for (var i = 0; i < filterButtons.length; i++) {
+      filterButtons[i].classList.remove('img-filters__button--active');
+    }
+  }
 
-    switch (currentFilter) {
-      case 'chrome':
-        effectStyle = 'filter: grayscale(' + (+percentEffect / 100) + ');';
+  function getNewPublication() {
+    var newPublications = [];
+    var numbersPublications = [];
+
+    while (numbersPublications.length < 10) {
+      var newNumber = Math.floor(Math.random() * publications.length);
+
+      if (numbersPublications.indexOf(newNumber) === -1) {
+        numbersPublications.push(newNumber);
+      }
+    }
+
+    for (var i = 0; i < numbersPublications.length; i++) {
+      newPublications.push(publications[numbersPublications[i]]);
+    }
+
+    return newPublications;
+  }
+
+  function getPublicationsByDiscussed() {
+    var newPublications = [];
+
+    for (var i = 0; i < publications.length; i++) {
+      newPublications[i] = publications[i];
+    }
+
+    newPublications.sort(function (a, b) {
+      if (a.comments.length < b.comments.length) {
+        return 1;
+      }
+      if (a.comments.length > b.comments.length) {
+        return -1;
+      }
+      return 0;
+    });
+
+    return newPublications;
+  }
+
+  function filterPublications(newFilter) {
+    var filteredPublications = [];
+
+    switch (newFilter) {
+      case 'filter-popular':
+        filteredPublications = publications;
         break;
-      case 'sepia':
-        effectStyle = 'filter: sepia(' + (+percentEffect / 100) + ');';
+      case 'filter-new':
+        filteredPublications = getNewPublication();
         break;
-      case 'marvin':
-        effectStyle = 'filter: invert(' + percentEffect + '%);';
-        break;
-      case 'phobos':
-        effectStyle = 'filter: blur(' + ((+percentEffect / 100) * 3) + 'px);';
-        break;
-      case 'heat':
-        effectStyle = 'filter: brightness(' + (((+percentEffect / 100) * 2) + 1) + ');';
+      case 'filter-discussed':
+        filteredPublications = getPublicationsByDiscussed();
         break;
       default:
-        effectStyle = '';
+        filteredPublications = publications;
         break;
     }
 
-    imagePreview.setAttribute('style', effectStyle);
+    window.gallery.clearPublications();
+
+    setTimeout(function () {
+      window.gallery.renderPublications(filteredPublications);
+    }, 500);
   }
 
-  function changeFilter(newFilter) {
-    if (newFilter === 'none') {
-      window.slider.hide();
-    } else {
-      window.slider.show();
-    }
+  window.backend.download(successHandler, errorHandler);
 
-    imagePreview.className = 'effects__preview--' + newFilter;
-    currentFilter = newFilter;
-
-    window.slider.reset();
-    window.filter.reset();
+  for (var i = 0; i < filterButtons.length; i++) {
+    (function (filterButton) {
+      filterButton.addEventListener('click', function (evt) {
+        clearButtons();
+        filterButton.classList.add('img-filters__button--active');
+        filterPublications(evt.target.id);
+      });
+    })(filterButtons[i]);
   }
 
 })();
