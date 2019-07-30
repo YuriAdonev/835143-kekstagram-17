@@ -3,22 +3,12 @@
 (function () {
   var imagePreview = document.querySelector('.img-upload__preview img');
   var effectsRadioButtons = document.querySelectorAll('.effects__radio');
+  var currentFilter = '';
 
   window.filter = {
     reset: reset,
-    currentFilter: '',
     changeIntensity: changeIntensity,
-    changeFilter: function (newFilter) {
-      if (newFilter === 'none') {
-        window.slider.hide();
-      } else {
-        window.slider.show();
-      }
-      imagePreview.className = 'effects__preview--' + newFilter;
-      window.filter.currentFilter = newFilter;
-      window.slider.reset();
-      window.filter.reset();
-    }
+    changeFilter: changeFilter
   };
 
   for (var i = 0; i < effectsRadioButtons.length; i++) {
@@ -36,7 +26,8 @@
 
   function changeIntensity(percentEffect) {
     var effectStyle;
-    switch (window.filter.currentFilter) {
+
+    switch (currentFilter) {
       case 'chrome':
         effectStyle = 'filter: grayscale(' + (+percentEffect / 100) + ');';
         break;
@@ -56,7 +47,22 @@
         effectStyle = '';
         break;
     }
+
     imagePreview.setAttribute('style', effectStyle);
+  }
+
+  function changeFilter(newFilter) {
+    if (newFilter === 'none') {
+      window.slider.hide();
+    } else {
+      window.slider.show();
+    }
+
+    imagePreview.className = 'effects__preview--' + newFilter;
+    currentFilter = newFilter;
+
+    window.slider.reset();
+    window.filter.reset();
   }
 
 })();
