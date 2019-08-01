@@ -1,10 +1,12 @@
 'use strict';
 
 (function () {
-  var effectLevelDepth = document.querySelector('.effect-level__depth');
-  var effectLevelPin = document.querySelector('.effect-level__pin');
-  var effectLevelInput = document.querySelector('.effect-level__value');
-  var effectLevelSlider = document.querySelector('.effect-level');
+  var MIN_POSITION_IN_PERCENT = 0;
+  var MAX_POSITION_IN_PERCENT = 100;
+  var depth = document.querySelector('.effect-level__depth');
+  var pin = document.querySelector('.effect-level__pin');
+  var input = document.querySelector('.effect-level__value');
+  var slider = document.querySelector('.effect-level');
 
   window.slider = {
     show: show,
@@ -13,45 +15,54 @@
   };
 
   function show() {
-    effectLevelSlider.classList.remove('hidden');
+    slider.classList.remove('hidden');
   }
 
   function hide() {
-    effectLevelSlider.classList.add('hidden');
+    slider.classList.add('hidden');
   }
 
   function reset() {
-    effectLevelInput.setAttribute('value', '100');
-    effectLevelPin.style.left = '100%';
-    effectLevelDepth.style.width = '100%';
+    input.setAttribute('value', '100');
+    pin.style.left = '100%';
+    depth.style.width = '100%';
   }
 
-  effectLevelPin.addEventListener('mousedown', function (evt) {
+  function getPositionInPercent(start, evt) {
+    var newPercent;
+    var width = document.querySelector('.effect-level__line').clientWidth;
+    var currentPercent = input.getAttribute('value');
+    var shiftX = evt.clientX - start;
+    newPercent = +currentPercent + ((shiftX / width) * 100);
+    if (newPercent < MIN_POSITION_IN_PERCENT) {
+      newPercent = MIN_POSITION_IN_PERCENT;
+    }
+    if (newPercent > MAX_POSITION_IN_PERCENT) {
+      newPercent = MAX_POSITION_IN_PERCENT;
+    }
+    return newPercent;
+  }
+
+  function applyChanges(percent) {
+    pin.style.left = percent + '%';
+    depth.style.width = percent + '%';
+
+    window.effects.changeIntensity(percent);
+  }
+
+  pin.addEventListener('mousedown', function (evt) {
     evt.preventDefault();
     var startCoordsX = evt.clientX;
-    var newEffectPercent;
+    var newPercent;
 
     function onMouseMove(moveEvt) {
-      var effectLineWidth = document.querySelector('.effect-level__line').clientWidth;
-      var currentEffectPercent = effectLevelInput.getAttribute('value');
-      var shiftX = moveEvt.clientX - startCoordsX;
-      newEffectPercent = +currentEffectPercent + ((shiftX / effectLineWidth) * 100);
-      if (newEffectPercent < 0) {
-        newEffectPercent = 0;
-      }
-      if (newEffectPercent > 100) {
-        newEffectPercent = 100;
-      }
-      effectLevelPin.style.left = newEffectPercent + '%';
-      effectLevelDepth.style.width = newEffectPercent + '%';
-
-      window.filter.changeIntensity(newEffectPercent);
+      applyChanges(getPositionInPercent(startCoordsX, moveEvt));
     }
 
     function onMouseUp(upEvt) {
       upEvt.preventDefault();
 
-      effectLevelInput.setAttribute('value', newEffectPercent);
+      input.setAttribute('value', newPercent);
 
       document.removeEventListener('mousemove', onMouseMove);
       document.removeEventListener('mouseup', onMouseUp);

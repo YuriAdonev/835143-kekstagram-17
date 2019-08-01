@@ -1,3 +1,3 @@
 'use strict';
 
-window.gallery.renderPublications();
+window.gallery.loadData();

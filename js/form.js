@@ -17,9 +17,8 @@
   form.addEventListener('submit', function (evt) {
     window.backend.upload(new FormData(form), function () {
       window.editor.close();
-      window.filter.changeFilter('none');
       window.slider.reset();
-      window.filter.reset();
+      window.effects.reset();
       form.reset();
     });
     evt.preventDefault();

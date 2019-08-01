@@ -2,32 +2,34 @@
 
 (function () {
   var imagePreview = document.querySelector('.img-upload__preview img');
-  var effectsRadioButtons = document.querySelectorAll('.effects__radio');
-  var currentFilter = '';
+  var buttons = document.querySelectorAll('.effects__radio');
+  var icons = document.querySelectorAll('.effects__preview');
+  var current = '';
 
-  window.filter = {
+  window.effects = {
     reset: reset,
     changeIntensity: changeIntensity,
-    changeFilter: changeFilter
+    updateIcons: updateIcons
   };
 
-  for (var i = 0; i < effectsRadioButtons.length; i++) {
-    (function (effectButton) {
-      effectButton.addEventListener('input', function (evt) {
-        window.filter.changeFilter(evt.target.getAttribute('value'));
+  for (var i = 0; i < buttons.length; i++) {
+    (function (button) {
+      button.addEventListener('input', function (evt) {
+        changeType(evt.target.getAttribute('value'));
       });
-      effectButton.addEventListener('keydown', window.utils.disableEnterKey);
-    })(effectsRadioButtons[i]);
+      button.addEventListener('keydown', window.utils.disableEnterKey);
+    })(buttons[i]);
   }
 
   function reset() {
-    imagePreview.setAttribute('style', '');
+    document.querySelector('#effect-none').checked = true;
+    changeType('none');
   }
 
   function changeIntensity(percentEffect) {
     var effectStyle;
 
-    switch (currentFilter) {
+    switch (current) {
       case 'chrome':
         effectStyle = 'filter: grayscale(' + (+percentEffect / 100) + ');';
         break;
@@ -51,18 +53,24 @@
     imagePreview.setAttribute('style', effectStyle);
   }
 
-  function changeFilter(newFilter) {
-    if (newFilter === 'none') {
+  function updateIcons(image) {
+    for (var j = 0; j < icons.length; j++) {
+      icons[j].setAttribute('style', 'background-image: url("' + image + '");');
+    }
+  }
+
+  function changeType(newEffect) {
+    if (newEffect === 'none') {
       window.slider.hide();
     } else {
       window.slider.show();
     }
 
-    imagePreview.className = 'effects__preview--' + newFilter;
-    currentFilter = newFilter;
+    imagePreview.className = 'effects__preview--' + newEffect;
+    current = newEffect;
 
     window.slider.reset();
-    window.filter.reset();
+    imagePreview.setAttribute('style', '');
   }
 
 })();
