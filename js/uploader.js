@@ -1,8 +1,8 @@
 'use strict';
 
 (function () {
-  var uploadFileInput = document.querySelector('#upload-file');
-  var uploadCancelButton = document.querySelector('#upload-cancel');
+  var fileInput = document.querySelector('#upload-file');
+  var cancelButton = document.querySelector('#upload-cancel');
   var imagePreview = document.querySelector('.img-upload__preview img');
 
   function loadImage(input) {
@@ -18,12 +18,12 @@
     }
   }
 
-  uploadFileInput.addEventListener('input', function (evt) {
+  fileInput.addEventListener('input', function (evt) {
     loadImage(evt.target);
     window.editor.open();
   });
 
-  uploadCancelButton.addEventListener('click', function () {
+  cancelButton.addEventListener('click', function () {
     window.editor.close();
   });
 

@@ -5,20 +5,24 @@
 
   var publicationTemplate = document.querySelector('#picture').content.querySelector('.picture');
   var publicationFragment = document.createDocumentFragment();
+  var filterNav = document.querySelector('.img-filters');
+  var filters = filterNav.querySelectorAll('button');
 
   window.gallery = {
-    renderPublications: renderPublications,
-    clearPublications: clearPublications,
-    filterPublications: filterPublications
+    loadData: loadData
   };
 
-  function renderPublications() {
-    for (var i = 0; i < publications.length; i++) {
+  function loadData() {
+    window.backend.download(successHandler, errorHandler);
+  }
+
+  function renderPublications(newPublications) {
+    for (var i = 0; i < newPublications.length; i++) {
       var publication = publicationTemplate.cloneNode(true);
 
-      publication.querySelector('.picture__likes').textContent = publications[i].likes;
-      publication.querySelector('.picture__comments').textContent = publications[i].comments.length.toString();
-      publication.querySelector('.picture__img').setAttribute('src', publications[i].url);
+      publication.querySelector('.picture__likes').textContent = newPublications[i].likes;
+      publication.querySelector('.picture__comments').textContent = newPublications[i].comments.length.toString();
+      publication.querySelector('.picture__img').setAttribute('src', newPublications[i].url);
       publicationFragment.appendChild(publication);
     }
     document.querySelector('.pictures').appendChild(publicationFragment);
@@ -60,7 +64,7 @@
   function filterPublications(newFilter) {
     var filteredPublications = [];
 
-    switch (newFilter) {
+    switch (newFilter + '') {
       case 'filter-popular':
         filteredPublications = publications;
         break;
@@ -75,16 +79,27 @@
         break;
     }
 
-    window.gallery.clearPublications();
+    clearPublications();
 
     setTimeout(function () {
-      window.gallery.renderPublications(filteredPublications);
+      renderPublications(filteredPublications);
     }, 500);
+  }
+
+  function filterShow() {
+    filterNav.classList.remove('img-filters--inactive');
+  }
+
+  function highlightSelectedFilter(selectedFilter) {
+    filters.forEach(function (filter) {
+      filter.classList.remove('img-filters__button--active');
+    });
+    selectedFilter.classList.add('img-filters__button--active');
   }
 
   function successHandler(data) {
     publications = data;
-    window.filters.show();
+    filterShow();
 
     filterPublications();
   }
@@ -102,6 +117,15 @@
     document.body.insertAdjacentElement('afterbegin', node);
   }
 
-  window.backend.download(successHandler, errorHandler);
+  for (var i = 0; i < filters.length; i++) {
+    (function (filterButton) {
+      filterButton.addEventListener('click', function (evt) {
+        highlightSelectedFilter(evt.target);
+        filterPublications(evt.target.id);
+      });
+    })(filters[i]);
+  }
+
+
 
 })();

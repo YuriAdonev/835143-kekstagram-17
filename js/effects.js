@@ -2,9 +2,9 @@
 
 (function () {
   var imagePreview = document.querySelector('.img-upload__preview img');
-  var effectsRadioButtons = document.querySelectorAll('.effects__radio');
-  var effectIcons = document.querySelectorAll('.effects__preview');
-  var currentEffect = '';
+  var buttons = document.querySelectorAll('.effects__radio');
+  var icons = document.querySelectorAll('.effects__preview');
+  var current = '';
 
   window.effects = {
     reset: reset,
@@ -12,24 +12,24 @@
     updateIcons: updateIcons
   };
 
-  for (var i = 0; i < effectsRadioButtons.length; i++) {
-    (function (effectButton) {
-      effectButton.addEventListener('input', function (evt) {
-        changeEffect(evt.target.getAttribute('value'));
+  for (var i = 0; i < buttons.length; i++) {
+    (function (button) {
+      button.addEventListener('input', function (evt) {
+        changeType(evt.target.getAttribute('value'));
       });
-      effectButton.addEventListener('keydown', window.utils.disableEnterKey);
-    })(effectsRadioButtons[i]);
+      button.addEventListener('keydown', window.utils.disableEnterKey);
+    })(buttons[i]);
   }
 
   function reset() {
     document.querySelector('#effect-none').checked = true;
-    changeEffect('none');
+    changeType('none');
   }
 
   function changeIntensity(percentEffect) {
     var effectStyle;
 
-    switch (currentEffect) {
+    switch (current) {
       case 'chrome':
         effectStyle = 'filter: grayscale(' + (+percentEffect / 100) + ');';
         break;
@@ -54,12 +54,12 @@
   }
 
   function updateIcons(image) {
-    for (var j = 0; j < effectIcons.length; j++) {
-      effectIcons[j].setAttribute('style', 'background-image: url("' + image + '");');
+    for (var j = 0; j < icons.length; j++) {
+      icons[j].setAttribute('style', 'background-image: url("' + image + '");');
     }
   }
 
-  function changeEffect(newEffect) {
+  function changeType(newEffect) {
     if (newEffect === 'none') {
       window.slider.hide();
     } else {
@@ -67,7 +67,7 @@
     }
 
     imagePreview.className = 'effects__preview--' + newEffect;
-    currentEffect = newEffect;
+    current = newEffect;
 
     window.slider.reset();
     imagePreview.setAttribute('style', '');

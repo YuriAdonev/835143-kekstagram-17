@@ -18,7 +18,7 @@
     close: close
   };
 
-  function onEditWindowEscPress(evt) {
+  function onWindowEscPress(evt) {
     if (evt.keyCode === window.utils.KeyCode.ESC) {
       close();
     }
@@ -50,13 +50,13 @@
 
   function open() {
     editorWindow.classList.remove('hidden');
-    document.addEventListener('keydown', onEditWindowEscPress);
+    document.addEventListener('keydown', onWindowEscPress);
     showImageScale();
   }
 
   function close() {
     editorWindow.classList.add('hidden');
-    document.removeEventListener('keydown', onEditWindowEscPress);
+    document.removeEventListener('keydown', onWindowEscPress);
     window.slider.reset();
     window.effects.reset();
     form.reset();
