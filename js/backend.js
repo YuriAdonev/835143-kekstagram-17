@@ -7,21 +7,38 @@
   var URL_TO_GET = 'https://js.dump.academy/kekstagram/data';
   var URL_TO_POST = 'https://js.dump.academy/kekstagram';
 
+  var HttpCommand = {
+    POST: 'POST',
+    GET: 'GET',
+  };
+
   window.backend = {
     upload: upload,
     download: download
   };
 
   function upload(data, onSuccess, onError) {
-    executeCommand('POST', onSuccess, onError, data);
+    executeCommand(HttpCommand.POST, onSuccess, onError, data);
   }
 
   function download(onSuccess, onError) {
-    executeCommand('GET', onSuccess, onError);
+    executeCommand(HttpCommand.GET, onSuccess, onError);
+  }
+
+  function getURL(cmd) {
+    switch (cmd) {
+      case 'POST':
+        return URL_TO_POST;
+      case 'GET':
+        return URL_TO_GET;
+      default:
+        return '';
+    }
   }
 
   function executeCommand(cmd, onSuccess, onError, data) {
     var xhr = new XMLHttpRequest();
+    var url = getURL(cmd);
 
     xhr.addEventListener('load', function () {
       if (xhr.status === STATUS_OK) {
@@ -41,25 +58,17 @@
 
     xhr.timeout = LOAD_TIMEOUT;
 
-    var url = '';
+    if (url !== '') {
+      xhr.open(cmd, url);
 
-    if (cmd === 'POST') {
-      url = URL_TO_POST;
-    }
+      if (cmd === 'POST') {
+        xhr.send(data);
+      }
 
-    if (cmd === 'GET') {
-      url = URL_TO_GET;
-    }
-
-    xhr.open(cmd, url);
-
-    if (cmd === 'POST') {
-      xhr.send(data);
-    }
-
-    if (cmd === 'GET') {
-      xhr.responseType = 'json';
-      xhr.send();
+      if (cmd === 'GET') {
+        xhr.responseType = 'json';
+        xhr.send();
+      }
     }
   }
 })();
