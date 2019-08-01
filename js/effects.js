@@ -3,11 +3,13 @@
 (function () {
   var imagePreview = document.querySelector('.img-upload__preview img');
   var effectsRadioButtons = document.querySelectorAll('.effects__radio');
+  var effectIcons = document.querySelectorAll('.effects__preview');
   var currentEffect = '';
 
   window.effects = {
     reset: reset,
-    changeIntensity: changeIntensity
+    changeIntensity: changeIntensity,
+    updateIcons: updateIcons
   };
 
   for (var i = 0; i < effectsRadioButtons.length; i++) {
@@ -49,6 +51,12 @@
     }
 
     imagePreview.setAttribute('style', effectStyle);
+  }
+
+  function updateIcons(image) {
+    for (var j = 0; j < effectIcons.length; j++) {
+      effectIcons[j].setAttribute('style', 'background-image: url("' + image + '");');
+    }
   }
 
   function changeEffect(newEffect) {
