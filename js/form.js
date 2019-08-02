@@ -2,16 +2,27 @@
 
 (function () {
   var form = document.querySelector('.img-upload__form');
-  var textHashtagsInput = document.querySelector('.text__hashtags');
-  var textDescriptionInput = document.querySelector('.text__description');
+  var hashtagsInput = document.querySelector('.text__hashtags');
+  var descriptionInput = document.querySelector('.text__description');
 
-  textHashtagsInput.addEventListener('focus', function () {
-    textHashtagsInput.addEventListener('keydown', window.utils.disableEnterKey);
-    textHashtagsInput.addEventListener('keydown', window.utils.disableEscKey);
+  window.form = {
+    reset: reset
+  };
+
+  function reset() {
+    form.reset();
+  }
+
+  hashtagsInput.addEventListener('keydown', function (evt) {
+    window.utils.executeOnEscPressed(evt.keyCode, function () {
+      evt.stopPropagation();
+    });
   });
 
-  textDescriptionInput.addEventListener('focus', function () {
-    textDescriptionInput.addEventListener('keydown', window.utils.disableEscKey);
+  descriptionInput.addEventListener('keydown', function (evt) {
+    window.utils.executeOnEscPressed(evt.keyCode, function () {
+      evt.stopPropagation();
+    });
   });
 
   form.addEventListener('submit', function (evt) {
