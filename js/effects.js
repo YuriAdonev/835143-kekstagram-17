@@ -12,15 +12,6 @@
     updateIcons: updateIcons
   };
 
-  for (var i = 0; i < buttons.length; i++) {
-    (function (button) {
-      button.addEventListener('input', function (evt) {
-        changeType(evt.target.getAttribute('value'));
-      });
-      button.addEventListener('keydown', window.utils.disableEnterKey);
-    })(buttons[i]);
-  }
-
   function reset() {
     document.querySelector('#effect-none').checked = true;
     changeType('none');
@@ -54,9 +45,9 @@
   }
 
   function updateIcons(image) {
-    for (var j = 0; j < icons.length; j++) {
-      icons[j].setAttribute('style', 'background-image: url("' + image + '");');
-    }
+    icons.forEach(function (icon) {
+      icon.setAttribute('style', 'background-image: url("' + image + '");');
+    });
   }
 
   function changeType(newEffect) {
@@ -71,6 +62,15 @@
 
     window.slider.reset();
     imagePreview.setAttribute('style', '');
+  }
+
+  for (var i = 0; i < buttons.length; i++) {
+    (function (button) {
+      button.addEventListener('input', function (evt) {
+        changeType(evt.target.getAttribute('value'));
+      });
+      button.addEventListener('keydown', window.utils.disableEnterKey);
+    })(buttons[i]);
   }
 
 })();

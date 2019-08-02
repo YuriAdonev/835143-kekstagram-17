@@ -3,10 +3,11 @@
 (function () {
   var MIN_POSITION_IN_PERCENT = 0;
   var MAX_POSITION_IN_PERCENT = 100;
-  var depth = document.querySelector('.effect-level__depth');
+
+  var depthValueElement = document.querySelector('.effect-level__depth');
   var pin = document.querySelector('.effect-level__pin');
-  var input = document.querySelector('.effect-level__value');
-  var slider = document.querySelector('.effect-level');
+  var depthValueInput = document.querySelector('.effect-level__value');
+  var scale = document.querySelector('.effect-level');
 
   window.slider = {
     show: show,
@@ -15,37 +16,40 @@
   };
 
   function show() {
-    slider.classList.remove('hidden');
+    scale.classList.remove('hidden');
   }
 
   function hide() {
-    slider.classList.add('hidden');
+    scale.classList.add('hidden');
   }
 
   function reset() {
-    input.setAttribute('value', '100');
+    depthValueInput.setAttribute('value', '100');
     pin.style.left = '100%';
-    depth.style.width = '100%';
+    depthValueElement.style.width = '100%';
   }
 
   function getPositionInPercent(start, evt) {
     var newPercent;
     var width = document.querySelector('.effect-level__line').clientWidth;
-    var currentPercent = input.getAttribute('value');
+    var currentPercent = depthValueInput.getAttribute('value');
     var shiftX = evt.clientX - start;
+
     newPercent = +currentPercent + ((shiftX / width) * 100);
+
     if (newPercent < MIN_POSITION_IN_PERCENT) {
       newPercent = MIN_POSITION_IN_PERCENT;
     }
     if (newPercent > MAX_POSITION_IN_PERCENT) {
       newPercent = MAX_POSITION_IN_PERCENT;
     }
+
     return newPercent;
   }
 
   function applyChanges(percent) {
     pin.style.left = percent + '%';
-    depth.style.width = percent + '%';
+    depthValueElement.style.width = percent + '%';
 
     window.effects.changeIntensity(percent);
   }
@@ -62,7 +66,7 @@
     function onMouseUp(upEvt) {
       upEvt.preventDefault();
 
-      input.setAttribute('value', newPercent);
+      depthValueInput.setAttribute('value', newPercent);
 
       document.removeEventListener('mousemove', onMouseMove);
       document.removeEventListener('mouseup', onMouseUp);
