@@ -1,4 +1,6 @@
 'use strict';
 
-window.gallery.loadData();
+(function () {
 
+  window.gallery.loadData();
+})();
