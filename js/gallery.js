@@ -102,6 +102,7 @@
     filterShow();
 
     filterPublications();
+    window.preview.show(publications[0]);
   }
 
   function errorHandler(errorMessage) {
