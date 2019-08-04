@@ -2,6 +2,7 @@
 
 (function () {
   var preview = document.querySelector('.big-picture');
+  var closeButton = document.querySelector('#picture-cancel');
   var commentTemplate = document.querySelector('#comment').content.querySelector('.social__comment');
   var commentsFragment = document.createDocumentFragment();
   var commentsBlock = document.querySelector('.social__comments');
@@ -51,6 +52,14 @@
   function hide() {
     preview.classList.add('hidden');
   }
+
+  document.addEventListener('keydown', function (evt) {
+    window.utils.executeOnEscPressed(evt.keyCode, window.preview.hide);
+  });
+
+  closeButton.addEventListener('click', function () {
+    hide();
+  });
 
 
 })();

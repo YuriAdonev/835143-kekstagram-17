@@ -26,6 +26,7 @@
       publicationFragment.appendChild(publication);
     }
     document.querySelector('.pictures').appendChild(publicationFragment);
+    linkControl(newPublications);
   }
 
   function clearPublications() {
@@ -86,6 +87,20 @@
     }, 500);
   }
 
+  function linkControl(arr) {
+    var publicationLinks = document.querySelectorAll('.picture');
+
+    for (var i = 0; i < publicationLinks.length; i++) {
+      (function (publicationLink) {
+        publicationLink.addEventListener('click', function (evt) {
+          evt.preventDefault();
+          window.preview.show(arr[0]);
+
+        });
+      })(publicationLinks[i]);
+    }
+  }
+
   function filterShow() {
     filterNav.classList.remove('img-filters--inactive');
   }
@@ -102,7 +117,6 @@
     filterShow();
 
     filterPublications();
-    window.preview.show(publications[0]);
   }
 
   function errorHandler(errorMessage) {
