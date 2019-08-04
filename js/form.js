@@ -84,7 +84,6 @@
 
   function hashtagsValidate() {
     var hashtags = hashtagsInput.value.toLowerCase().split(' ');
-    console.log(hashtags);
     if (hashtags.length > 5) {
       errorHashtags('Должно быть до 5 хэш-тэгов');
       return false;

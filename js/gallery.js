@@ -87,6 +87,17 @@
     }, 500);
   }
 
+  function showPreview(arr) {
+    var publicationLinks = document.querySelectorAll('.picture');
+
+    for (var i = 0; i < publicationLinks.length; i++) {
+      if (publicationLinks[i].classList.contains('selected')) {
+        window.preview.show(arr[i]);
+        publicationLinks[i].classList.remove('selected');
+      }
+    }
+  }
+
   function linkControl(arr) {
     var publicationLinks = document.querySelectorAll('.picture');
 
@@ -94,8 +105,8 @@
       (function (publicationLink) {
         publicationLink.addEventListener('click', function (evt) {
           evt.preventDefault();
-          window.preview.show(arr[0]);
-
+          publicationLink.classList.add('selected');
+          showPreview(arr);
         });
       })(publicationLinks[i]);
     }
