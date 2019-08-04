@@ -5,7 +5,7 @@
   var STATUS_OK = 200;
 
   var URL_TO_GET = 'https://js.dump.academy/kekstagram/data';
-  var URL_TO_POST = 'https://js.dump.academy/kekstagram1';
+  var URL_TO_POST = 'https://js.dump.academy/kekstagram';
 
   var HttpCommand = {
     POST: 'POST',

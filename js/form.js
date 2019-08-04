@@ -64,17 +64,50 @@
   }
 
   function onSuccess() {
-    showSuccess();
-
     window.editor.close();
     window.slider.reset();
     window.effects.reset();
     form.reset();
+    showSuccess();
   }
 
   function onError() {
     showError();
 
+  }
+
+  function errorHashtags(message) {
+    hashtagsInput.style.borderColor = 'red';
+    hashtagsInput.setCustomValidity(message);
+    hashtagsInput.reset();
+  }
+
+  function hashtagsValidate() {
+    var hashtags = hashtagsInput.value.toLowerCase().split(' ');
+    console.log(hashtags);
+    if (hashtags.length > 5) {
+      errorHashtags('Должно быть до 5 хэш-тэгов');
+      return false;
+    }
+    for (var i = 0; i < hashtags.length; i++) {
+      var counter = hashtags.filter(function (hashtag) {
+        return hashtag === hashtags[i];
+      });
+
+      if (counter.length > 1) {
+        errorHashtags('Хэш-тэги не должны повторяться');
+        return false;
+      }
+      if (hashtags[i][0] !== '#') {
+        errorHashtags('Хэш-тэг должен начинаться с символа #');
+        return false;
+      }
+      if (hashtags[i].length < 2 || hashtags[i].length > 20) {
+        errorHashtags('Хэш-тэг должен содержать от 2 до 20 символов');
+        return false;
+      }
+    }
+    return true;
   }
 
   hashtagsInput.addEventListener('keydown', function (evt) {
@@ -91,7 +124,9 @@
 
   form.addEventListener('submit', function (evt) {
     evt.preventDefault();
-    window.backend.upload(new FormData(form), onSuccess, onError);
+    if (hashtagsValidate()) {
+      window.backend.upload(new FormData(form), onSuccess, onError);
+    }
   });
 
 })();
