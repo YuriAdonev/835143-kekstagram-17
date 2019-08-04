@@ -6,9 +6,8 @@
   var SCALE_STEP = 25;
 
   var imageScale = 100;
-  var editorWindow = document.querySelector('.img-upload__overlay');
-  var form = document.querySelector('.img-upload__form');
-  var imagePreviewBlock = document.querySelector('.img-upload__preview');
+  var container = document.querySelector('.img-upload__overlay');
+  var imagePreview = document.querySelector('.img-upload__preview');
   var scaleControl = document.querySelector('.scale__control--value');
   var scaleIncreaseButton = document.querySelector('.scale__control--bigger');
   var scaleDecreaseButton = document.querySelector('.scale__control--smaller');
@@ -18,49 +17,48 @@
     close: close
   };
 
-  function onWindowEscPress(evt) {
-    if (evt.keyCode === window.utils.KeyCode.ESC) {
-      close();
-    }
-  }
-
   function showImageScale() {
     scaleControl.value = imageScale + '%';
   }
 
   function changeImageScale() {
-    imagePreviewBlock.style.transform = 'scale(' + (imageScale / 100) + ')';
+    imagePreview.style.transform = 'scale(' + (imageScale / 100) + ')';
+  }
+
+  function applyChanges() {
+    changeImageScale();
+    showImageScale();
   }
 
   function imageZoomIn() {
     if (imageScale < SCALE_MAX) {
       imageScale = imageScale + SCALE_STEP;
-      changeImageScale();
-      showImageScale();
+      applyChanges();
     }
   }
 
   function imageZoomOut() {
     if (imageScale > SCALE_MIN) {
       imageScale = imageScale - SCALE_STEP;
-      changeImageScale();
-      showImageScale();
+      applyChanges();
     }
   }
 
   function open() {
-    editorWindow.classList.remove('hidden');
-    document.addEventListener('keydown', onWindowEscPress);
+    container.classList.remove('hidden');
     showImageScale();
   }
 
   function close() {
-    editorWindow.classList.add('hidden');
-    document.removeEventListener('keydown', onWindowEscPress);
+    container.classList.add('hidden');
     window.slider.reset();
     window.effects.reset();
-    form.reset();
+    window.form.reset();
   }
+
+  document.addEventListener('keydown', function (evt) {
+    window.utils.executeOnEscPressed(evt.keyCode, window.editor.close);
+  });
 
   scaleIncreaseButton.addEventListener('click', function () {
     imageZoomIn();

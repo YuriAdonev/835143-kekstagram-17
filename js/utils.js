@@ -1,20 +1,25 @@
 'use strict';
 
 (function () {
-  window.utils = {
-    KeyCode: {
-      ENTER: 13,
-      ESC: 27
-    },
-    disableEnterKey: function (evt) {
-      if (evt.keyCode === window.utils.KeyCode.ENTER) {
-        evt.stopPropagation();
-      }
-    },
-    disableEscKey: function (evt) {
-      if (evt.keyCode === window.utils.KeyCode.ESC) {
-        evt.stopPropagation();
-      }
-    }
+  var KeyCode = {
+    ENTER: 13,
+    ESC: 27
   };
+
+  window.utils = {
+    executeOnEnterPressed: executeOnEnterPressed,
+    executeOnEscPressed: executeOnEscPressed,
+  };
+
+  function executeOnEnterPressed(keyCode, action) {
+    if (keyCode === KeyCode.ENTER) {
+      action();
+    }
+  }
+
+  function executeOnEscPressed(keyCode, action) {
+    if (keyCode === KeyCode.ESC) {
+      action();
+    }
+  }
 })();

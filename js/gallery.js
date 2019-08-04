@@ -26,6 +26,7 @@
       publicationFragment.appendChild(publication);
     }
     document.querySelector('.pictures').appendChild(publicationFragment);
+    linkControl(newPublications);
   }
 
   function clearPublications() {
@@ -86,6 +87,31 @@
     }, 500);
   }
 
+  function showPreview(arr) {
+    var publicationLinks = document.querySelectorAll('.picture');
+
+    for (var i = 0; i < publicationLinks.length; i++) {
+      if (publicationLinks[i].classList.contains('selected')) {
+        window.preview.show(arr[i]);
+        publicationLinks[i].classList.remove('selected');
+      }
+    }
+  }
+
+  function linkControl(arr) {
+    var publicationLinks = document.querySelectorAll('.picture');
+
+    for (var i = 0; i < publicationLinks.length; i++) {
+      (function (publicationLink) {
+        publicationLink.addEventListener('click', function (evt) {
+          evt.preventDefault();
+          publicationLink.classList.add('selected');
+          showPreview(arr);
+        });
+      })(publicationLinks[i]);
+    }
+  }
+
   function filterShow() {
     filterNav.classList.remove('img-filters--inactive');
   }
@@ -102,7 +128,6 @@
     filterShow();
 
     filterPublications();
-    window.preview.show(publications[0]);
   }
 
   function errorHandler(errorMessage) {
