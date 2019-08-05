@@ -1,6 +1,8 @@
 'use strict';
 
 (function () {
+  var MAX_HASHTAG_COUNT = 5;
+
   var form = document.querySelector('.img-upload__form');
   var hashtagsInput = document.querySelector('.text__hashtags');
   var descriptionInput = document.querySelector('.text__description');
@@ -76,35 +78,36 @@
 
   }
 
-  function errorHashtags(message) {
-    hashtagsInput.focus();
-    hashtagsInput.style.borderColor = 'red';
-    hashtagsInput.setCustomValidity(message);
-    if (message === '') {
-      hashtagsInput.style.borderColor = 'gray';
-    }
+  function isHashtagUniqe(hashtags) {
+    var buffer = [];
+    hashtags.forEach(function (hashtag) {
+      if (!buffer.includes(hashtag)) {
+        buffer.push(hashtag);
+      } else {
+        return false;
+      }
+    });
+
+    return true;
+  }
+
+  function isHashtagCountCorrect(hashtags) {
+    return (hashtags.length > MAX_HASHTAG_COUNT) ? false : true;
   }
 
   function hashtagsValidate() {
     var hashtags = hashtagsInput.value.toLowerCase().split(' ');
     var msg = '';
-    if (hashtags.length > 4) {
+    if (isHashtagCountCorrect(hashtags)) {
       msg = 'Должно быть до 5 хэш-тэгов';
     }
     for (var i = 0; i < hashtags.length; i++) {
-      var counter = hashtags.reduce(function (accumulator, item) {
-        if (item === hashtags[i]) {
-          return accumulator + 1;
-        } else {
-          return accumulator;
-        }
-      }, 0);
-      var rgx = /#([a-zA-Zа-яА-Я0-9]|([\u00a9|\u00ae|[\u2000-\u3300]|\\ud83c[\\ud000-\\udfff]|\\ud83d[\\ud000-\\udfff]|\\ud83e[\\ud000-\\udfff])){1,19}/;
+      var rgx = /^#[а-яА-ЯёЁA-Za-z0-9_]{1,19}$/;
       var myArray = hashtags[i].match(rgx);
       if (myArray[0].length === null || myArray[0].length > 20) {
         msg = 'Хэш-тэг должен содержать от 2 до 20 символов';
       }
-      if (counter > 1) {
+      if (isHashtagUniqe(hashtags)) {
         msg = 'Хэш-тэги не должны повторяться';
       }
       if (hashtags[i][0] !== '#') {
@@ -127,15 +130,15 @@
   });
 
   form.addEventListener('submit', function (evt) {
-    evt.preventDefault();
-    if (hashtagsValidate() === '') {
+    if (form.checkValidity()) {
+      evt.preventDefault();
       window.backend.upload(new FormData(form), onSuccess, onError);
     }
   });
 
   hashtagsInput.addEventListener('input', function () {
-    var msg = hashtagsValidate();
-    errorHashtags(msg);
+    var message = hashtagsValidate();
+    hashtagsInput.setCustomValidity(message);
   });
 
 })();

@@ -27,6 +27,7 @@
     }
     document.querySelector('.pictures').appendChild(publicationFragment);
     linkControl(newPublications);
+    filterShow();
   }
 
   function clearPublications() {
@@ -125,8 +126,6 @@
 
   function successHandler(data) {
     publications = data;
-    filterShow();
-
     filterPublications();
   }
 

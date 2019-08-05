@@ -23,6 +23,7 @@
 
       comment.querySelector('.social__text').textContent = comments[i].message;
       comment.querySelector('.social__picture').setAttribute('src', comments[i].avatar);
+      comment.querySelector('.social__picture').setAttribute('alt', comments[i].name);
       commentsFragment.appendChild(comment);
     }
     commentsBlock.appendChild(commentsFragment);
@@ -42,7 +43,7 @@
     commentsCount.textContent = publication.comments.length;
     description.textContent = publication.description;
 
-    commentsCount.classList.add('visually-hidden');
+    // commentsCount.classList.add('visually-hidden');
     commentsLoader.classList.add('visually-hidden');
 
     clearComments();
