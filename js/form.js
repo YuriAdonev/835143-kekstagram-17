@@ -97,8 +97,8 @@
   }
 
   function isHashtagMatchPattern(hashtags) {
-    for (var hashtag = 0; hashtag < hashtags.length; hashtag++) {
-      if (!HASHTAG_PATTERN.test(hashtags[hashtag])) {
+    for (var i = 0; i < hashtags.length; i++) {
+      if (!HASHTAG_PATTERN.test(hashtags[i])) {
         return false;
       }
     }

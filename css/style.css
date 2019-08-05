@@ -751,6 +751,12 @@ main {
   border-radius: 5px;
 }
 
+.text__hashtags:invalid,
+.text__description:invalid {
+  border-color: #f51c1c;
+  outline-color: #f51c1c;
+}
+
 .input-error {
   border-color: #e90000;
 }
