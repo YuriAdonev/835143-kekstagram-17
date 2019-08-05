@@ -2,6 +2,7 @@
 
 (function () {
   var MAX_HASHTAG_COUNT = 5;
+  var HASHTAG_PATTERN = /^#[а-яА-ЯёЁA-Za-z0-9_]{1,19}$/;
 
   var form = document.querySelector('.img-upload__form');
   var hashtagsInput = document.querySelector('.text__hashtags');
@@ -80,41 +81,48 @@
 
   function isHashtagUniqe(hashtags) {
     var buffer = [];
-    hashtags.forEach(function (hashtag) {
-      if (!buffer.includes(hashtag)) {
-        buffer.push(hashtag);
+    for (var i = 0; i < hashtags.length; i++) {
+      if (!buffer.includes(hashtags[i])) {
+        buffer.push(hashtags[i]);
       } else {
         return false;
       }
-    });
+    }
 
     return true;
   }
 
   function isHashtagCountCorrect(hashtags) {
-    return (hashtags.length > MAX_HASHTAG_COUNT) ? false : true;
+    return (hashtags.length <= MAX_HASHTAG_COUNT);
   }
 
-  function hashtagsValidate() {
+  function isHashtagMatchPattern(hashtags) {
+    for (var hashtag = 0; hashtag < hashtags.length; hashtag++) {
+      if (!HASHTAG_PATTERN.test(hashtags[hashtag])) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  function validateHashtags() {
     var hashtags = hashtagsInput.value.toLowerCase().split(' ');
-    var msg = '';
-    if (isHashtagCountCorrect(hashtags)) {
-      msg = 'Должно быть до 5 хэш-тэгов';
+
+    if (!isHashtagCountCorrect(hashtags)) {
+      return 'Должно быть до 5 хэш-тэгов';
     }
-    for (var i = 0; i < hashtags.length; i++) {
-      var rgx = /^#[а-яА-ЯёЁA-Za-z0-9_]{1,19}$/;
-      var myArray = hashtags[i].match(rgx);
-      if (myArray[0].length === null || myArray[0].length > 20) {
-        msg = 'Хэш-тэг должен содержать от 2 до 20 символов';
-      }
-      if (isHashtagUniqe(hashtags)) {
-        msg = 'Хэш-тэги не должны повторяться';
-      }
-      if (hashtags[i][0] !== '#') {
-        msg = 'Хэш-тэг должен начинаться с символа #';
-      }
+
+    if (!isHashtagUniqe(hashtags)) {
+      return 'Хэш-тэги не должны повторяться';
     }
-    return msg;
+
+    if (!isHashtagMatchPattern(hashtags)) {
+      return 'Хэш-тэг должен начинаться с символа #.' +
+        'Допустимая длина хэш-тега от 2 до 20 ' +
+        'символов, включая символ #.';
+    }
+
+    return '';
   }
 
   hashtagsInput.addEventListener('keydown', function (evt) {
@@ -137,7 +145,7 @@
   });
 
   hashtagsInput.addEventListener('input', function () {
-    var message = hashtagsValidate();
+    var message = validateHashtags();
     hashtagsInput.setCustomValidity(message);
   });
 
