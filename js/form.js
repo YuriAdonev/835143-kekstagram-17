@@ -2,7 +2,7 @@
 
 (function () {
   var MAX_HASHTAG_COUNT = 5;
-  var HASHTAG_PATTERN = /^#[а-яА-ЯёЁA-Za-z0-9_]{1,19}$/;
+  var HASHTAG_PATTERN = /^#[а-яА-ЯёЁA-Za-z0-9_.]{1,19}$/;
 
   var form = document.querySelector('.img-upload__form');
   var hashtagsInput = document.querySelector('.text__hashtags');
@@ -92,6 +92,15 @@
     return true;
   }
 
+  function isTooManySpacesBetween(hashtags) {
+    for (var i = 0; i < hashtags.length; i++) {
+      if (hashtags[i] === '') {
+        return true;
+      }
+    }
+    return false;
+  }
+
   function isHashtagCountCorrect(hashtags) {
     return (hashtags.length <= MAX_HASHTAG_COUNT);
   }
@@ -108,7 +117,15 @@
   function validateHashtags() {
     var hashtags = hashtagsInput.value.toLowerCase().split(' ');
 
-    if (!isHashtagCountCorrect(hashtags)) {
+    if ((hashtags.length === 1) && (hashtags[0] === '')) {
+      return '';
+    }
+
+    if (!isTooManySpacesBetween(hashtags)) {
+      return 'Хэш-теги должны быть разделены одним пробелом';
+    }
+
+    if (!isTooManySpacesBetween(hashtags)) {
       return 'Должно быть до 5 хэш-тэгов';
     }
 
