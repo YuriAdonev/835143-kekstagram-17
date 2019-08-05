@@ -77,36 +77,42 @@
   }
 
   function errorHashtags(message) {
+    hashtagsInput.focus();
     hashtagsInput.style.borderColor = 'red';
     hashtagsInput.setCustomValidity(message);
-    hashtagsInput.reset();
+    if (message === '') {
+      hashtagsInput.style.borderColor = 'gray';
+    }
   }
 
   function hashtagsValidate() {
     var hashtags = hashtagsInput.value.toLowerCase().split(' ');
-    if (hashtags.length > 5) {
-      errorHashtags('Должно быть до 5 хэш-тэгов');
-      return false;
+    var msg = '';
+    if (hashtags.length > 4) {
+      msg = 'Должно быть до 5 хэш-тэгов';
     }
     for (var i = 0; i < hashtags.length; i++) {
-      var counter = hashtags.filter(function (hashtag) {
-        return hashtag === hashtags[i];
-      });
-
-      if (counter.length > 1) {
-        errorHashtags('Хэш-тэги не должны повторяться');
-        return false;
+      var counter = hashtags.reduce(function (accumulator, item) {
+        if (item === hashtags[i]) {
+          return accumulator + 1;
+        } else {
+          return accumulator;
+        }
+      }, 0);
+      var rgx = /#([a-zA-Zа-яА-Я0-9]|([\u00a9|\u00ae|[\u2000-\u3300]|\\ud83c[\\ud000-\\udfff]|\\ud83d[\\ud000-\\udfff]|\\ud83e[\\ud000-\\udfff])){1,19}/;
+      var myArray = hashtags[i].match(rgx);
+      console.log(myArray);
+      if (myArray[0].length === null || myArray[0].length > 20) {
+        msg = 'Хэш-тэг должен содержать от 2 до 20 символов';
+      }
+      if (counter > 1) {
+        msg = 'Хэш-тэги не должны повторяться';
       }
       if (hashtags[i][0] !== '#') {
-        errorHashtags('Хэш-тэг должен начинаться с символа #');
-        return false;
-      }
-      if (hashtags[i].length < 2 || hashtags[i].length > 20) {
-        errorHashtags('Хэш-тэг должен содержать от 2 до 20 символов');
-        return false;
+        msg = 'Хэш-тэг должен начинаться с символа #';
       }
     }
-    return true;
+    return msg;
   }
 
   hashtagsInput.addEventListener('keydown', function (evt) {
@@ -123,9 +129,14 @@
 
   form.addEventListener('submit', function (evt) {
     evt.preventDefault();
-    if (hashtagsValidate()) {
+    if (hashtagsValidate() === '') {
       window.backend.upload(new FormData(form), onSuccess, onError);
     }
+  });
+
+  hashtagsInput.addEventListener('input', function () {
+    var msg = hashtagsValidate();
+    errorHashtags(msg);
   });
 
 })();

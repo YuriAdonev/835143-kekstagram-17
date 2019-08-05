@@ -54,6 +54,8 @@
     window.slider.reset();
     window.effects.reset();
     window.form.reset();
+    imageScale = 100;
+    changeImageScale();
   }
 
   document.addEventListener('keydown', function (evt) {
