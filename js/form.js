@@ -121,11 +121,11 @@
       return '';
     }
 
-    if (!isTooManySpacesBetween(hashtags)) {
+    if (isTooManySpacesBetween(hashtags)) {
       return 'Хэш-теги должны быть разделены одним пробелом';
     }
 
-    if (!isTooManySpacesBetween(hashtags)) {
+    if (!isHashtagCountCorrect(hashtags)) {
       return 'Должно быть до 5 хэш-тэгов';
     }
 
