@@ -18,7 +18,7 @@
     form.reset();
   }
 
-  function showSuccess() {
+  function showSuccessMessage() {
     document.querySelector('main').appendChild(successTemplate.cloneNode(true));
 
     var successWindow = document.querySelector('.success');
@@ -39,7 +39,7 @@
     });
   }
 
-  function showError() {
+  function showErrorMessage() {
     document.querySelector('main').appendChild(errorTemplate.cloneNode(true));
 
     var errorWindow = document.querySelector('.error');
@@ -48,7 +48,7 @@
     errorWindow.addEventListener('click', function () {
       errorWindow.remove();
     });
-    document.querySelector('.success__inner').addEventListener('click', function (evt) {
+    document.querySelector('.error__inner').addEventListener('click', function (evt) {
       evt.stopPropagation();
     });
     document.addEventListener('keydown', function (evt) {
@@ -71,11 +71,11 @@
     window.slider.reset();
     window.effects.reset();
     form.reset();
-    showSuccess();
+    showSuccessMessage();
   }
 
   function onError() {
-    showError();
+    showErrorMessage();
 
   }
 
