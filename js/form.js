@@ -101,7 +101,6 @@
       }, 0);
       var rgx = /#([a-zA-Zа-яА-Я0-9]|([\u00a9|\u00ae|[\u2000-\u3300]|\\ud83c[\\ud000-\\udfff]|\\ud83d[\\ud000-\\udfff]|\\ud83e[\\ud000-\\udfff])){1,19}/;
       var myArray = hashtags[i].match(rgx);
-      console.log(myArray);
       if (myArray[0].length === null || myArray[0].length > 20) {
         msg = 'Хэш-тэг должен содержать от 2 до 20 символов';
       }
