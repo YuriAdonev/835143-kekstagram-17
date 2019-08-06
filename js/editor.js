@@ -30,14 +30,14 @@
     showImageScale();
   }
 
-  function imageZoomIn() {
+  function increaseScale() {
     if (imageScale < SCALE_MAX) {
       imageScale = imageScale + SCALE_STEP;
       applyChanges();
     }
   }
 
-  function imageZoomOut() {
+  function decreaseScale() {
     if (imageScale > SCALE_MIN) {
       imageScale = imageScale - SCALE_STEP;
       applyChanges();
@@ -63,11 +63,11 @@
   });
 
   scaleIncreaseButton.addEventListener('click', function () {
-    imageZoomIn();
+    increaseScale();
   });
 
   scaleDecreaseButton.addEventListener('click', function () {
-    imageZoomOut();
+    decreaseScale();
   });
 
 

@@ -26,8 +26,8 @@
       publicationFragment.appendChild(publication);
     }
     document.querySelector('.pictures').appendChild(publicationFragment);
-    linkControl(newPublications);
-    filterShow();
+    addEventListenersToPictures(newPublications);
+    showFilter();
   }
 
   function clearPublications() {
@@ -92,14 +92,16 @@
     var publicationLinks = document.querySelectorAll('.picture');
 
     for (var i = 0; i < publicationLinks.length; i++) {
-      if (publicationLinks[i].classList.contains('selected')) {
+      var link = publicationLinks[i];
+      if (link.classList.contains('selected')) {
         window.preview.show(arr[i]);
-        publicationLinks[i].classList.remove('selected');
+        link.classList.remove('selected');
+        break;
       }
     }
   }
 
-  function linkControl(arr) {
+  function addEventListenersToPictures(arr) {
     var publicationLinks = document.querySelectorAll('.picture');
 
     for (var i = 0; i < publicationLinks.length; i++) {
@@ -113,7 +115,7 @@
     }
   }
 
-  function filterShow() {
+  function showFilter() {
     filterNav.classList.remove('img-filters--inactive');
   }
 
