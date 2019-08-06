@@ -61,7 +61,7 @@
     current = newEffect;
 
     window.slider.reset();
-    imagePreview.style = '';
+    imagePreview.style.filter = '';
   }
 
   for (var i = 0; i < buttons.length; i++) {
