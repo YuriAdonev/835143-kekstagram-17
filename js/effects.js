@@ -57,7 +57,7 @@
       window.slider.show();
     }
 
-    imagePreview.className = 'effects__preview--' + newEffect;
+    imagePreview.setAttribute('class', 'effects__preview--' + newEffect);
     current = newEffect;
 
     window.slider.reset();
