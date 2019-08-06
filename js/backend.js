@@ -27,9 +27,9 @@
 
   function getURL(cmd) {
     switch (cmd) {
-      case 'POST':
+      case HttpCommand.POST:
         return URL_TO_POST;
-      case 'GET':
+      case HttpCommand.GET:
         return URL_TO_GET;
       default:
         return '';
@@ -61,11 +61,11 @@
     if (url !== '') {
       xhr.open(cmd, url);
 
-      if (cmd === 'POST') {
+      if (cmd === HttpCommand.POST) {
         xhr.send(data);
       }
 
-      if (cmd === 'GET') {
+      if (cmd === HttpCommand.GET) {
         xhr.responseType = 'json';
         xhr.send();
       }

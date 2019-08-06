@@ -10,7 +10,6 @@
   var successTemplate = document.querySelector('#success').content.querySelector('.success');
   var errorTemplate = document.querySelector('#error').content.querySelector('.error');
   var sendMessageTemplate = document.querySelector('#messages').content.querySelector('.img-upload__message--loading');
-  var sendMessageWindow = document.querySelector('.img-upload__message--loading');
 
   window.form = {
     reset: reset
@@ -24,8 +23,6 @@
     document.querySelector('main').appendChild(successTemplate.cloneNode(true));
 
     var successWindow = document.querySelector('.success');
-
-    // sendMessageWindow.remove();
 
     successWindow.addEventListener('click', function () {
       successWindow.remove();
@@ -75,12 +72,16 @@
     window.slider.reset();
     window.effects.reset();
     form.reset();
-    sendMessageWindow.remove();
+    if (document.querySelector('.img-upload__message--loading')) {
+      document.querySelector('.img-upload__message--loading').remove();
+    }
     showSuccessMessage();
   }
 
   function onError() {
-    sendMessageWindow.remove();
+    if (document.querySelector('.img-upload__message--loading')) {
+      document.querySelector('.img-upload__message--loading').remove();
+    }
     showErrorMessage();
 
   }

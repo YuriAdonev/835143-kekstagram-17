@@ -1,8 +1,9 @@
 'use strict';
 
 (function () {
-  var publications = [];
+  var RANDOM_PUBLICATIONS_COUNT = 10;
 
+  var publications = [];
   var publicationTemplate = document.querySelector('#picture').content.querySelector('.picture');
   var publicationFragment = document.createDocumentFragment();
   var filterNav = document.querySelector('.img-filters');
@@ -39,22 +40,11 @@
   }
 
   function getNewPublication() {
-    var newPublications = [];
-    var numbersPublications = [];
+    var maxStartIndex = publications.length - RANDOM_PUBLICATIONS_COUNT - 1;
+    var startIndex = Math.floor(Math.random() * maxStartIndex);
+    var endIndex = startIndex + RANDOM_PUBLICATIONS_COUNT;
 
-    while (numbersPublications.length < 10) {
-      var newNumber = Math.floor(Math.random() * publications.length);
-
-      if (numbersPublications.indexOf(newNumber) === -1) {
-        numbersPublications.push(newNumber);
-      }
-    }
-
-    for (var i = 0; i < numbersPublications.length; i++) {
-      newPublications.push(publications[numbersPublications[i]]);
-    }
-
-    return newPublications;
+    return publications.slice(startIndex, endIndex);
   }
 
   function getDiscussedPublications() {
