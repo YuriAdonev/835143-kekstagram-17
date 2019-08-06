@@ -22,31 +22,31 @@
 
     switch (current) {
       case 'chrome':
-        effectStyle = 'filter: grayscale(' + (+percentEffect / 100) + ');';
+        effectStyle = 'grayscale(' + (+percentEffect / 100) + ')';
         break;
       case 'sepia':
-        effectStyle = 'filter: sepia(' + (+percentEffect / 100) + ');';
+        effectStyle = 'sepia(' + (+percentEffect / 100) + ')';
         break;
       case 'marvin':
-        effectStyle = 'filter: invert(' + percentEffect + '%);';
+        effectStyle = 'invert(' + percentEffect + '%)';
         break;
       case 'phobos':
-        effectStyle = 'filter: blur(' + ((+percentEffect / 100) * 3) + 'px);';
+        effectStyle = 'blur(' + ((+percentEffect / 100) * 3) + 'px)';
         break;
       case 'heat':
-        effectStyle = 'filter: brightness(' + (((+percentEffect / 100) * 2) + 1) + ');';
+        effectStyle = 'brightness(' + (((+percentEffect / 100) * 2) + 1) + ')';
         break;
       default:
         effectStyle = '';
         break;
     }
 
-    imagePreview.style = effectStyle;
+    imagePreview.style.filter = effectStyle;
   }
 
   function updateIcons(image) {
     icons.forEach(function (icon) {
-      icon.style = 'background-image: url("' + image + '");';
+      icon.style.backgroundImage = 'url("' + image + '");';
     });
   }
 
