@@ -1,10 +1,12 @@
 'use strict';
 
 (function () {
-  var counterComments;
-  var commentsToLoad;
-  var commentsIndex = 0;
-  var publicationComments;
+  var DEFAULT_COMMENTS_COUNT_TO_LOAD = 5;
+
+  var comments;
+  var shownComments;
+  var totalComments;
+
   var preview = document.querySelector('.big-picture');
   var closeButton = document.querySelector('#picture-cancel');
   var commentTemplate = document.querySelector('#comment').content.querySelector('.social__comment');
@@ -21,64 +23,86 @@
     hide: hide
   };
 
-  function addComments() {
-    if (counterComments + 5 > publicationComments.length) {
-      commentsToLoad = publicationComments.length - counterComments;
-    } else {
-      commentsToLoad = 5;
-    }
-    counterComments = counterComments + commentsToLoad;
-    if (counterComments === publicationComments.length) {
-      commentsLoader.classList.add('visually-hidden');
-    }
-    commentsShow.textContent = counterComments;
-    renderComments(publicationComments);
+  function showCommentsLoader() {
+    commentsLoader.classList.remove('visually-hidden');
   }
 
-  function renderComments(comments) {
-    var i = 0;
+  function hideCommentsLoader() {
+    commentsLoader.classList.add('visually-hidden');
+  }
 
-    while (i < commentsToLoad) {
+  function loadMoreComments() {
+    var restComments = totalComments - shownComments;
+    var commentsToShow = 0;
+
+    if (totalComments === 0) {
+      document.querySelector('.social__comment-count').classList.add('hidden');
+    }
+
+    if (totalComments >= 0 && totalComments <= 5) {
+      hideCommentsLoader();
+    }
+
+    if (restComments <= DEFAULT_COMMENTS_COUNT_TO_LOAD) {
+      hideCommentsLoader();
+      commentsToShow = restComments;
+    } else {
+      commentsToShow = DEFAULT_COMMENTS_COUNT_TO_LOAD;
+    }
+
+    renderComments(commentsToShow);
+    commentsShow.textContent = shownComments;
+  }
+
+  function renderComments(commentsToShow) {
+    var fragment = document.createDocumentFragment();
+
+    for (var i = 0; i < commentsToShow; i++) {
       var comment = commentTemplate.cloneNode(true);
 
-      comment.querySelector('.social__text').textContent = comments[commentsIndex].message;
-      comment.querySelector('.social__picture').src = comments[commentsIndex].avatar;
-      comment.querySelector('.social__picture').alt = comments[commentsIndex].name;
-      commentsBlock.appendChild(comment);
-      commentsIndex++;
-      i++;
+      comment.querySelector('.social__text').textContent = comments[shownComments].message;
+      comment.querySelector('.social__picture').src = comments[shownComments].avatar;
+      comment.querySelector('.social__picture').alt = comments[shownComments].name;
+      shownComments++;
+
+      fragment.appendChild(comment);
     }
+
+    commentsBlock.appendChild(fragment);
   }
 
   function clearComments() {
-    var comments = commentsBlock.querySelectorAll('.social__comment');
-    for (var i = 0; i < comments.length; i++) {
-      comments[i].remove();
+    while (commentsBlock.firstChild) {
+      commentsBlock.removeChild(commentsBlock.firstChild);
     }
-    counterComments = 0;
-    commentsToLoad = 0;
-    commentsIndex = 0;
   }
 
   function show(publication) {
-    publicationComments = publication.comments;
-    preview.classList.remove('hidden');
+    comments = publication.comments;
+
     image.src = publication.url;
     likesCount.textContent = publication.likes;
     commentsCount.textContent = publication.comments.length;
     description.textContent = publication.description;
-    commentsLoader.classList.remove('visually-hidden');
+
+    shownComments = 0;
+    totalComments = comments.length;
 
     clearComments();
-    addComments(publication.comments);
-    commentsLoader.addEventListener('click', addComments);
+    showCommentsLoader();
+    loadMoreComments();
+
+    preview.classList.remove('hidden');
   }
+
 
   function hide() {
     preview.classList.add('hidden');
-    commentsLoader.removeEventListener('click', addComments);
-
   }
+
+  commentsLoader.addEventListener('click', function () {
+    loadMoreComments();
+  });
 
   document.addEventListener('keydown', function (evt) {
     window.utils.executeOnEscPressed(evt.keyCode, window.preview.hide);

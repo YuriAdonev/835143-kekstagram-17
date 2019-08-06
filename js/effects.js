@@ -47,7 +47,7 @@
 
   function updateIcons(image) {
     icons.forEach(function (icon) {
-      icon.style.backgroundImage = 'url("' + image + '");';
+      icon.style.backgroundImage = 'url("' + image + '")';
     });
   }
 
