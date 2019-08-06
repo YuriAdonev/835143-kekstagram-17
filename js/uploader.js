@@ -10,7 +10,7 @@
       var reader = new FileReader();
 
       reader.onload = function (evt) {
-        imagePreview.setAttribute('src', evt.target.result);
+        imagePreview.src = evt.target.result;
         window.effects.updateIcons(evt.target.result);
       };
 
