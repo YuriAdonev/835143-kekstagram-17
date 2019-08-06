@@ -5,6 +5,7 @@
   var buttons = document.querySelectorAll('.effects__radio');
   var icons = document.querySelectorAll('.effects__preview');
   var current = '';
+  var effectNone = document.querySelector('#effect-none');
 
   window.effects = {
     reset: reset,
@@ -13,7 +14,7 @@
   };
 
   function reset() {
-    document.querySelector('#effect-none').checked = true;
+    effectNone.checked = true;
     changeType('none');
   }
 
