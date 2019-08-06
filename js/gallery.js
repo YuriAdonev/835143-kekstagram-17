@@ -23,7 +23,7 @@
 
       publication.querySelector('.picture__likes').textContent = newPublications[i].likes;
       publication.querySelector('.picture__comments').textContent = newPublications[i].comments.length.toString();
-      publication.querySelector('.picture__img').setAttribute('src', newPublications[i].url);
+      publication.querySelector('.picture__img').src = newPublications[i].url;
       publicationFragment.appendChild(publication);
     }
     document.querySelector('.pictures').appendChild(publicationFragment);

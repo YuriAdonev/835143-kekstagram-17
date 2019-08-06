@@ -41,12 +41,12 @@
         break;
     }
 
-    imagePreview.setAttribute('style', effectStyle);
+    imagePreview.style = effectStyle;
   }
 
   function updateIcons(image) {
     icons.forEach(function (icon) {
-      icon.setAttribute('style', 'background-image: url("' + image + '");');
+      icon.style = 'background-image: url("' + image + '");';
     });
   }
 
@@ -57,17 +57,17 @@
       window.slider.show();
     }
 
-    imagePreview.setAttribute('class', 'effects__preview--' + newEffect);
+    imagePreview.className = 'effects__preview--' + newEffect;
     current = newEffect;
 
     window.slider.reset();
-    imagePreview.setAttribute('style', '');
+    imagePreview.style = '';
   }
 
   for (var i = 0; i < buttons.length; i++) {
     (function (button) {
       button.addEventListener('input', function (evt) {
-        changeType(evt.target.getAttribute('value'));
+        changeType(evt.target.value);
       });
       button.addEventListener('keydown', function (evt) {
         window.utils.executeOnEnterPressed(evt.keyCode, evt.stopPropagation);

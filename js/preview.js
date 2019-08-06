@@ -39,8 +39,8 @@
       var comment = commentTemplate.cloneNode(true);
 
       comment.querySelector('.social__text').textContent = comments[i].message;
-      comment.querySelector('.social__picture').setAttribute('src', comments[i].avatar);
-      comment.querySelector('.social__picture').setAttribute('alt', comments[i].name);
+      comment.querySelector('.social__picture').src = comments[i].avatar;
+      comment.querySelector('.social__picture').alt = comments[i].name;
       commentsBlock.appendChild(comment);
     }
   }
@@ -57,7 +57,7 @@
   function show(publication) {
     publicationComments = publication.comments;
     preview.classList.remove('hidden');
-    image.setAttribute('src', publication.url);
+    image.src = publication.url;
     likesCount.textContent = publication.likes;
     commentsCount.textContent = publication.comments.length;
     description.textContent = publication.description;

@@ -4,10 +4,11 @@
   var MIN_POSITION_IN_PERCENT = 0;
   var MAX_POSITION_IN_PERCENT = 100;
 
-  var levelDepth = document.querySelector('.effect-level__depth');
-  var levelPin = document.querySelector('.effect-level__pin');
-  var levelValue = document.querySelector('.effect-level__value');
-  var level = document.querySelector('.effect-level');
+  var percent;
+  var depthValueElement = document.querySelector('.effect-level__depth');
+  var pin = document.querySelector('.effect-level__pin');
+  var depthValueInput = document.querySelector('.effect-level__value');
+  var scale = document.querySelector('.effect-level');
 
   window.slider = {
     show: show,
@@ -16,23 +17,23 @@
   };
 
   function show() {
-    level.classList.remove('hidden');
+    scale.classList.remove('hidden');
   }
 
   function hide() {
-    level.classList.add('hidden');
+    scale.classList.add('hidden');
   }
 
   function reset() {
-    levelValue.setAttribute('value', '100');
-    levelPin.style.left = '100%';
-    levelDepth.style.width = '100%';
+    depthValueInput.value = 100;
+    pin.style.left = '100%';
+    depthValueElement.style.width = '100%';
   }
 
   function getPositionInPercent(start, evt) {
     var newPercent;
     var width = document.querySelector('.effect-level__line').clientWidth;
-    var currentPercent = levelValue.getAttribute('value');
+    var currentPercent = depthValueInput.value;
     var shiftX = evt.clientX - start;
 
     newPercent = +currentPercent + ((shiftX / width) * 100);
@@ -47,26 +48,27 @@
     return newPercent;
   }
 
-  function applyChanges(percent) {
-    levelPin.style.left = percent + '%';
-    levelDepth.style.width = percent + '%';
+  function applyChanges(percentChange) {
+    pin.style.left = percentChange + '%';
+    depthValueElement.style.width = percentChange + '%';
 
-    window.effects.changeIntensity(percent);
+    window.effects.changeIntensity(percentChange);
   }
 
-  levelPin.addEventListener('mousedown', function (evt) {
+  pin.addEventListener('mousedown', function (evt) {
     evt.preventDefault();
     var startCoordsX = evt.clientX;
-    var newPercent;
+
 
     function onMouseMove(moveEvt) {
-      applyChanges(getPositionInPercent(startCoordsX, moveEvt));
+      percent = getPositionInPercent(startCoordsX, moveEvt);
+      applyChanges(percent);
     }
 
     function onMouseUp(upEvt) {
       upEvt.preventDefault();
 
-      levelValue.setAttribute('value', newPercent);
+      depthValueInput.value = percent;
 
       document.removeEventListener('mousemove', onMouseMove);
       document.removeEventListener('mouseup', onMouseUp);
