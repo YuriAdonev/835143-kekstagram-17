@@ -13,7 +13,7 @@
   };
 
   function loadData() {
-    window.backend.download(successHandler, errorHandler);
+    window.backend.download(onSuccess, onError);
   }
 
   function renderPublications(newPublications) {
@@ -126,12 +126,12 @@
     selectedFilter.classList.add('img-filters__button--active');
   }
 
-  function successHandler(data) {
+  function onSuccess(data) {
     publications = data;
     filterPublications();
   }
 
-  function errorHandler(errorMessage) {
+  function onError(errorMessage) {
     var node = document.createElement('div');
 
     node.style = 'z-index: 100; margin: 0 auto; text-align: center; background-color: red;';

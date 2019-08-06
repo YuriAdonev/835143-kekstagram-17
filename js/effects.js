@@ -69,7 +69,9 @@
       button.addEventListener('input', function (evt) {
         changeType(evt.target.getAttribute('value'));
       });
-      button.addEventListener('keydown', window.utils.disableEnterKey);
+      button.addEventListener('keydown', function (evt) {
+        window.utils.executeOnEnterPressed(evt.keyCode, evt.stopPropagation);
+      });
     })(buttons[i]);
   }
 
