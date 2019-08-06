@@ -9,8 +9,8 @@
   var descriptionInput = document.querySelector('.text__description');
   var successTemplate = document.querySelector('#success').content.querySelector('.success');
   var errorTemplate = document.querySelector('#error').content.querySelector('.error');
-  var sendMessgeTemplate = document.querySelector('#messages').content.querySelector('.img-upload__message--loading');
-  var sendMessgeWindow = document.querySelector('.img-upload__message--loading');
+  var sendMessageTemplate = document.querySelector('#messages').content.querySelector('.img-upload__message--loading');
+  var sendMessageWindow = document.querySelector('.img-upload__message--loading');
 
   window.form = {
     reset: reset
@@ -25,7 +25,7 @@
 
     var successWindow = document.querySelector('.success');
 
-    sendMessgeWindow.remove();
+    // sendMessageWindow.remove();
 
     successWindow.addEventListener('click', function () {
       successWindow.remove();
@@ -45,7 +45,6 @@
 
   function showErrorMessage() {
     document.querySelector('main').appendChild(errorTemplate.cloneNode(true));
-    sendMessgeWindow.remove();
 
     var errorWindow = document.querySelector('.error');
     var buttons = document.querySelectorAll('.error__button');
@@ -76,10 +75,12 @@
     window.slider.reset();
     window.effects.reset();
     form.reset();
+    sendMessageWindow.remove();
     showSuccessMessage();
   }
 
   function onError() {
+    sendMessageWindow.remove();
     showErrorMessage();
 
   }
@@ -163,7 +164,7 @@
   form.addEventListener('submit', function (evt) {
     if (form.checkValidity()) {
       evt.preventDefault();
-      document.querySelector('main').appendChild(sendMessgeTemplate.cloneNode(true));
+      document.querySelector('main').appendChild(sendMessageTemplate.cloneNode(true));
       window.backend.upload(new FormData(form), onSuccess, onError);
     }
   });
