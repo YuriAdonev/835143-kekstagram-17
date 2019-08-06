@@ -5,6 +5,7 @@
   var HASHTAG_PATTERN = /^#[а-яА-ЯёЁA-Za-z0-9_.]{1,19}$/;
 
   var form = document.querySelector('.img-upload__form');
+  var main = document.querySelector('main');
   var hashtagsInput = document.querySelector('.text__hashtags');
   var descriptionInput = document.querySelector('.text__description');
   var successTemplate = document.querySelector('#success').content.querySelector('.success');
@@ -20,7 +21,7 @@
   }
 
   function showSuccessMessage() {
-    document.querySelector('main').appendChild(successTemplate.cloneNode(true));
+    main.appendChild(successTemplate.cloneNode(true));
 
     var successWindow = document.querySelector('.success');
 
@@ -41,7 +42,7 @@
   }
 
   function showErrorMessage() {
-    document.querySelector('main').appendChild(errorTemplate.cloneNode(true));
+    main.appendChild(errorTemplate.cloneNode(true));
 
     var errorWindow = document.querySelector('.error');
     var buttons = document.querySelectorAll('.error__button');
