@@ -8,16 +8,16 @@
   var totalComments;
 
   var preview = document.querySelector('.big-picture');
-  var closeButton = document.querySelector('#picture-cancel');
+  var closeButton = preview.querySelector('#picture-cancel');
   var commentTemplate = document.querySelector('#comment').content.querySelector('.social__comment');
-  var commentsBlock = document.querySelector('.social__comments');
-  var image = document.querySelector('.big-picture__img img');
-  var likesCount = document.querySelector('.likes-count');
-  var commentsCount = document.querySelector('.comments-count');
-  var commentsShow = document.querySelector('.comment-show');
-  var commentsLoader = document.querySelector('.comments-loader');
-  var commentsStatistics = document.querySelector('.social__comment-count');
-  var description = document.querySelector('.social__caption');
+  var commentsBlock = preview.querySelector('.social__comments');
+  var commentsStatistics = preview.querySelector('.social__comment-count');
+  var commentsCount = commentsStatistics.querySelector('.comments-count');
+  var commentsShow = commentsStatistics.querySelector('.comment-show');
+  var commentsLoader = preview.querySelector('.comments-loader');
+  var image = preview.querySelector('.big-picture__img img');
+  var likesCount = preview.querySelector('.likes-count');
+  var description = preview.querySelector('.social__caption');
 
   window.preview = {
     show: show,

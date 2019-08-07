@@ -36,6 +36,6 @@
         cb.apply(null, parameters);
       }, timeout);
     };
-  };
+  }
 
 })();

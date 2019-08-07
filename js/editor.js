@@ -7,10 +7,10 @@
 
   var imageScale = 100;
   var container = document.querySelector('.img-upload__overlay');
-  var imagePreview = document.querySelector('.img-upload__preview');
-  var scaleControl = document.querySelector('.scale__control--value');
-  var scaleIncreaseButton = document.querySelector('.scale__control--bigger');
-  var scaleDecreaseButton = document.querySelector('.scale__control--smaller');
+  var imagePreview = container.querySelector('.img-upload__preview');
+  var scaleControl = container.querySelector('.scale__control--value');
+  var scaleIncreaseButton = container.querySelector('.scale__control--bigger');
+  var scaleDecreaseButton = container.querySelector('.scale__control--smaller');
 
   window.editor = {
     open: open,

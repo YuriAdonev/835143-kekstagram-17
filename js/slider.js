@@ -5,11 +5,11 @@
   var MAX_POSITION_IN_PERCENT = 100;
 
   var percent;
-  var levelDepth = document.querySelector('.effect-level__depth');
-  var levelPin = document.querySelector('.effect-level__pin');
-  var levelValue = document.querySelector('.effect-level__value');
   var level = document.querySelector('.effect-level');
-  var levelLine = document.querySelector('.effect-level__line');
+  var levelValue = level.querySelector('.effect-level__value');
+  var levelLine = level.querySelector('.effect-level__line');
+  var levelDepth = levelLine.querySelector('.effect-level__depth');
+  var levelPin = levelLine.querySelector('.effect-level__pin');
 
   window.slider = {
     show: show,

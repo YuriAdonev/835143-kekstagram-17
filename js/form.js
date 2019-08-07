@@ -4,10 +4,10 @@
   var MAX_HASHTAG_COUNT = 5;
   var HASHTAG_PATTERN = /^#[а-яА-ЯёЁA-Za-z0-9_.]{1,19}$/;
 
-  var form = document.querySelector('.img-upload__form');
   var main = document.querySelector('main');
-  var hashtagsInput = document.querySelector('.text__hashtags');
-  var descriptionInput = document.querySelector('.text__description');
+  var form = main.querySelector('.img-upload__form');
+  var hashtagsInput = form.querySelector('.text__hashtags');
+  var descriptionInput = form.querySelector('.text__description');
   var successTemplate = document.querySelector('#success').content.querySelector('.success');
   var errorTemplate = document.querySelector('#error').content.querySelector('.error');
   var sendMessageTemplate = document.querySelector('#messages').content.querySelector('.img-upload__message--loading');
@@ -28,10 +28,10 @@
     successWindow.addEventListener('click', function () {
       successWindow.remove();
     });
-    document.querySelector('.success__inner').addEventListener('click', function (evt) {
+    successWindow.querySelector('.success__inner').addEventListener('click', function (evt) {
       evt.stopPropagation();
     });
-    document.querySelector('.success__button').addEventListener('click', function () {
+    successWindow.querySelector('.success__button').addEventListener('click', function () {
       successWindow.remove();
     });
     document.addEventListener('keydown', function (evt) {
@@ -50,7 +50,7 @@
     errorWindow.addEventListener('click', function () {
       errorWindow.remove();
     });
-    document.querySelector('.error__inner').addEventListener('click', function (evt) {
+    errorWindow.querySelector('.error__inner').addEventListener('click', function (evt) {
       evt.stopPropagation();
     });
     document.addEventListener('keydown', function (evt) {

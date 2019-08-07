@@ -10,7 +10,7 @@
   var publicationTemplate = document.querySelector('#picture').content.querySelector('.picture');
   var filterNav = document.querySelector('.img-filters');
   var filterButtons = filterNav.querySelectorAll('button');
-  var currentFilter = document.querySelector('.img-filters__button--active');
+  var currentFilter = filterNav.querySelector('.img-filters__button--active');
   var applyFilter = window.utils.debounce(function (filteredPublications) {
     clearPublications();
     renderPublications(filteredPublications);
