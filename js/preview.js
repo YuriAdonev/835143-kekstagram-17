@@ -16,6 +16,7 @@
   var commentsCount = document.querySelector('.comments-count');
   var commentsShow = document.querySelector('.comment-show');
   var commentsLoader = document.querySelector('.comments-loader');
+  var commentsStatistics = document.querySelector('.social__comment-count');
   var description = document.querySelector('.social__caption');
 
   window.preview = {
@@ -31,16 +32,20 @@
     commentsLoader.classList.add('visually-hidden');
   }
 
+  function showCommentsStatistics() {
+    commentsStatistics.classList.remove('hidden');
+  }
+
+  function hideCommentsStatistics() {
+    commentsStatistics.classList.add('hidden');
+  }
+
   function loadMoreComments() {
     var restComments = totalComments - shownComments;
     var commentsToShow = 0;
 
     if (totalComments === 0) {
-      document.querySelector('.social__comment-count').classList.add('hidden');
-    }
-
-    if (totalComments >= 0 && totalComments <= 5) {
-      hideCommentsLoader();
+      hideCommentsStatistics();
     }
 
     if (restComments <= DEFAULT_COMMENTS_COUNT_TO_LOAD) {
@@ -89,6 +94,7 @@
     totalComments = comments.length;
 
     clearComments();
+    showCommentsStatistics();
     showCommentsLoader();
     loadMoreComments();
 
